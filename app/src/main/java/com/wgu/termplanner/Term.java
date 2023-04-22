@@ -6,17 +6,42 @@ import java.util.Date;
 public class Term {
 
     public static ArrayList<Term> termArrayList = new ArrayList<>();
+    public static String TERM_EDIT_EXTRA = "termEdit";
+
 
     private int id;
     private String title;
     private String startDate;
     private String endDate;
+    private Date deleted;
+
 
     public Term(int id, String title, String startDate, String endDate) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
+        deleted = null;
+    }
+
+    public static Term getTermForID(int passedTermID) {
+        for (Term term : termArrayList)
+        {
+            if(term.getId() == passedTermID)
+                return term;
+        }
+        return null;
+    }
+
+    public static ArrayList<Term> nonDeletedTerms() {
+        ArrayList<Term> nonDeleted = new ArrayList<>();
+        for(Term term : termArrayList)
+        {
+            if(term.getDeleted() == null)
+                nonDeleted.add(term);
+        }
+        return nonDeleted;
+
     }
 
     public int getId() {
@@ -49,5 +74,13 @@ public class Term {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public Date getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Date deleted) {
+        this.deleted = deleted;
     }
 }

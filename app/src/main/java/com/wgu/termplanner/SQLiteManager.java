@@ -47,7 +47,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
         StringBuilder sql;
         sql = new StringBuilder()
-                .append("CREATE TABLE")
+                .append("CREATE TABLE ")
                 .append(TABLE_NAME)
                 .append("(")
                 .append(COUNTER)
