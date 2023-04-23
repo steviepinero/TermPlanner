@@ -18,15 +18,25 @@ public class SQLiteManager extends SQLiteOpenHelper {
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
     private static final int DATABASE_VERSION = 1;
+
     private static final String TABLE_NAME = "Term";
     private static final String COUNTER = "Counter";
-
     //Term table columns
     private static final String ID_FIELD = "id";
     private static final String TITLE_FIELD = "title";
     private static final String START_DATE_FIELD = "startDate";
     private static final String END_DATE_FIELD = "endDate";
     private static final String DELETED_FIELD = "deleted";
+
+    //Course table columns
+    private static final String COURSES_TABLE_NAME = "Courses";
+    private static final String COURSE_ID_FIELD = "id";
+    private static final String COURSE_TITLE_FIELD = "title";
+    private static final String COURSE_START_DATE_FIELD = "startDate";
+    private static final String COURSE_END_DATE_FIELD = "endDate";
+    private static final String COURSE_TERM_ID_FIELD = "termId";
+    private static final String COURSE_STATUS_FIELD = "status";
+    private static final String COURSE_INSTRUCTOR_FIELD = "instructor";
 
     //formatting the date with timestamp
     private static final DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
@@ -47,8 +57,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        StringBuilder sql;
-        sql = new StringBuilder()
+        StringBuilder termSql;
+        termSql = new StringBuilder()
                 .append("CREATE TABLE ")
                 .append(TABLE_NAME)
                 .append("(")
@@ -61,11 +71,42 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 .append(START_DATE_FIELD)
                 .append(" TEXT, ")
                 .append(END_DATE_FIELD)
-                .append(" TEXT, ")
-                .append(DELETED_FIELD)
+                /*.append(" TEXT, ")
+                .append(DELETED_FIELD)*/
                 .append( " TEXT)");
 
-        sqLiteDatabase.execSQL(sql.toString());
+        sqLiteDatabase.execSQL(termSql.toString());
+
+        StringBuilder courseSql;
+        courseSql = new StringBuilder()
+                .append("CREATE TABLE ")
+                .append(COURSES_TABLE_NAME)
+                .append("(")
+                .append(COURSE_ID_FIELD)
+                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append(COURSE_TITLE_FIELD)
+                .append(" TEXT, ")
+                .append(COURSE_START_DATE_FIELD)
+                .append(" TEXT, ")
+                .append(COURSE_END_DATE_FIELD)
+                .append(" TEXT, ")
+                .append(COURSE_INSTRUCTOR_FIELD)
+                .append(" TEXT, ")
+                .append(COURSE_STATUS_FIELD)
+                .append(" TEXT, ")
+                .append(COURSE_TERM_ID_FIELD)
+                .append(" INT, ")
+                .append("FOREIGN KEY(")
+                .append(COURSE_TERM_ID_FIELD)
+                .append(") REFERENCES ")
+                .append(TABLE_NAME)
+                .append("(")
+                .append(ID_FIELD)
+                .append(")")
+                .append(")");
+
+        sqLiteDatabase.execSQL(courseSql.toString());
+
 
     }
 
@@ -82,7 +123,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(TITLE_FIELD, term.getTitle());
         contentValues.put(START_DATE_FIELD, term.getStartDate());
         contentValues.put(END_DATE_FIELD, term.getEndDate());
-        contentValues.put(DELETED_FIELD, getStringFromDate(term.getDeleted()));
+      /*  contentValues.put(DELETED_FIELD, getStringFromDate(term.getDeleted()));*/
 
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
@@ -146,4 +187,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
     }
 
+    public void addCourseToDatabase(Course newCourse) {
+    }
+
+    public void updateCourseInDatabase(Course selectedCourse) {
+    }
 }

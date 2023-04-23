@@ -33,7 +33,7 @@
             android:backgroundTint="@color/white"
             android:textStyle="bold"
             android:layout_gravity="end"
-            android:onClick="saveTerm"/>
+            android:onClick="saveCourse"/>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -118,6 +118,7 @@
         android:textStyle="bold" />
 
     <RadioGroup
+        android:id="@+id/statusEditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -128,21 +129,25 @@
         android:textStyle="bold">
 
         <RadioButton
+            android:id="@+id/inProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="In Progress" />
 
         <RadioButton
+            android:id="@+id/completed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Completed" />
 
         <RadioButton
+            android:id="@+id/dropped"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dropped" />
 
         <RadioButton
+            android:id="@+id/planToTake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Plan to Take" />

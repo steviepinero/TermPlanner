@@ -33,12 +33,12 @@
             android:backgroundTint="@color/purple_700"
             android:textStyle="bold"
             android:layout_gravity="end"
-            android:onClick="newTerm"/>
+            android:onClick="newCourse"/>
 
     </androidx.appcompat.widget.Toolbar>
     
     <ListView
-        android:id="@+id/termListView"
+        android:id="@+id/courseListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="3dp"
