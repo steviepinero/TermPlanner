@@ -81,7 +81,7 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     public void deleteTerm(View view) {
-        //TODO fix broken delete
+
         selectedTerm.setDeleted(new Date());
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         sqLiteManager.updateTermInDatabase(selectedTerm);
