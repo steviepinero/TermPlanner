@@ -43,7 +43,7 @@
           <port value="" />
           <database value="" />
           <files>
-            <file path="C:\Users\stevi\AndroidStudioProjects\DegreePlanner\identifier.sqlite" schema="main" />
+            <file path="C:\Users\stevi\AndroidStudioProjects\TermPlanner\identifier.sqlite" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />

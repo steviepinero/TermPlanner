@@ -16,6 +16,14 @@ public class Term {
     private Date deleted;
 
 
+    public Term(int id, String title, String startDate, String endDate, Date deleted) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.deleted = deleted;
+    }
+
     public Term(int id, String title, String startDate, String endDate) {
         this.id = id;
         this.title = title;

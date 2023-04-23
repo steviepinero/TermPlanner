@@ -11,7 +11,24 @@
     <chatChannels>
       <chatChannel>
         <option name="model" value="gpt-3.5-turbo" />
-        <option name="messages" />
+        <option name="messages">
+          <Message>
+            <option name="content" value="can you help me code ?" />
+            <option name="role" value="user" />
+          </Message>
+          <Message>
+            <option name="content" value="Sure, we can help you with coding. Please let us know what language and project you are working on, and what kind of help you require." />
+            <option name="role" value="assistant" />
+          </Message>
+          <Message>
+            <option name="content" value="can you see the code thats in my ide?" />
+            <option name="role" value="user" />
+          </Message>
+          <Message>
+            <option name="content" value="As an AI language model, I am not capable of seeing your source code in your IDE directly. However, I can guide and suggest to you regarding your code issues or queries. You can either share your code or describe the problem, and we can help with the best solution or suggestion." />
+            <option name="role" value="assistant" />
+          </Message>
+        </option>
       </chatChannel>
     </chatChannels>
   </component>

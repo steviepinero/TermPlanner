@@ -26,9 +26,11 @@ public class SQLiteManager extends SQLiteOpenHelper {
     private static final String TITLE_FIELD = "title";
     private static final String START_DATE_FIELD = "startDate";
     private static final String END_DATE_FIELD = "endDate";
+    private static final String DELETED_FIELD = "deleted";
 
-    //formatting the date
-    private static final DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+    //formatting the date with timestamp
+    private static final DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+    private int deleted;
 
 
     public SQLiteManager(Context context) {
@@ -59,7 +61,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 .append(START_DATE_FIELD)
                 .append(" TEXT, ")
                 .append(END_DATE_FIELD)
-                .append( " TEXT) ");
+                .append(" TEXT, ")
+                .append(DELETED_FIELD)
+                .append( " TEXT)");
 
         sqLiteDatabase.execSQL(sql.toString());
 
@@ -78,6 +82,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(TITLE_FIELD, term.getTitle());
         contentValues.put(START_DATE_FIELD, term.getStartDate());
         contentValues.put(END_DATE_FIELD, term.getEndDate());
+        contentValues.put(DELETED_FIELD, getStringFromDate(term.getDeleted()));
 
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
@@ -86,7 +91,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     public void populateTermListArray() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        try (Cursor result = sqLiteDatabase.rawQuery(" SELECT * FROM " + TABLE_NAME, null)) {
+        try (Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null)) {
             if(result.getCount() != 0)
             {
                 while(result.moveToNext())
@@ -95,10 +100,13 @@ public class SQLiteManager extends SQLiteOpenHelper {
                     String title = result.getString(2);
                     String startDate = result.getString(3);
                     String endDate = result.getString(4);
+                    /*String stringDeleted = result.getString(5);
+                    Date deleted = getDateFromString(stringDeleted);*/
 
                     //converts strings to date
                     Date startDateRefactor = getDateFromString(startDate);
                     Date endDateRefactor = getDateFromString(endDate);
+
                     Term term = new Term(id, title, startDate, endDate);
                     Term.termArrayList.add(term);
 
@@ -116,6 +124,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(TITLE_FIELD, term.getTitle());
         contentValues.put(START_DATE_FIELD, term.getStartDate());
         contentValues.put(END_DATE_FIELD, term.getEndDate());
+/*
+        contentValues.put(DELETED_FIELD, getStringFromDate(term.getDeleted()));
+*/
 
         sqLiteDatabase.update(TABLE_NAME, contentValues, ID_FIELD + " =? ", new String[]{String.valueOf(term.getId())});
     }
