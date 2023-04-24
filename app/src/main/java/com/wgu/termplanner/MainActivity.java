@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         loadFromDBToMemory();
         setTermAdapter();
         setOnClickListener();
+
+
+
     }
 
     private void loadFromDBToMemory() {
@@ -29,6 +34,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void initWidgets() {
         termListView = findViewById(R.id.termListView);
+        setOnClickListener();
+
+        Button courseDetailButton = findViewById(R.id.course_detail_button);
+        if (courseDetailButton != null) {
+            courseDetailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Handle button click event
+                    onCourseDetailButtonClick(view);
+                }
+            });
+        }
+    }
+
+    public void onCourseDetailButtonClick(View view) {
+        // Get the course ID from the intent extras
+        long courseId = getIntent().getLongExtra(Course.COURSE_EDIT_EXTRA, -1);
+        if (courseId == -1) {
+            // The course ID was not found in the intent extras
+            Toast.makeText(this, "Course ID not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Launch the CourseDetailActivity and pass the course ID as an extra
+        Intent intent = new Intent(this, CourseDetailActivity.class);
+        intent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
+        startActivity(intent);
     }
 
     private void setTermAdapter() {

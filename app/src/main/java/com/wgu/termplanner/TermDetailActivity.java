@@ -23,6 +23,8 @@ public class TermDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_term_detail);
         initWidgets();
         checkForEditTerm();
+
+
     }
 
 

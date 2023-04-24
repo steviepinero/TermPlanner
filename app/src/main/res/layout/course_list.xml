@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Term Planner"
+        android:text="Courses"
         android:textSize="35sp"
         android:textColor="@color/white"
         android:textStyle="bold"

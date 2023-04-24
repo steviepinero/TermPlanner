@@ -25,6 +25,7 @@ public class CourseDetailActivity extends Activity {
         setContentView(R.layout.activity_course_detail);
         initWidgets();
         checkForEditCourse();
+
     }
 
 
@@ -99,6 +100,6 @@ public class CourseDetailActivity extends Activity {
         finish();
     }
 
-    public void onCourseDetailButtonClick(View view) {
-    }
+
+
 }
