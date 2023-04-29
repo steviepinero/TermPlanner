@@ -36,18 +36,21 @@ public class MainActivity extends AppCompatActivity {
         termListView = findViewById(R.id.termListView);
         setOnClickListener();
 
-        Button courseDetailButton = findViewById(R.id.course_detail_button);
+        Button courseDetailButton = findViewById(R.id.courseDetailButton);
         if (courseDetailButton != null) {
             courseDetailButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Handle button click event
+/*
                     onCourseDetailButtonClick(view);
+*/
                 }
             });
         }
     }
 
+/*
     public void onCourseDetailButtonClick(View view) {
         // Get the course ID from the intent extras
         long courseId = getIntent().getLongExtra(Course.COURSE_EDIT_EXTRA, -1);
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
         startActivity(intent);
     }
+*/
 
     private void setTermAdapter() {
         TermAdapter termAdapter = new TermAdapter(getApplicationContext(), Term.nonDeletedTerms());
