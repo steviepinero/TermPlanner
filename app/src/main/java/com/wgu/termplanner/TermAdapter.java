@@ -71,3 +71,4 @@ public class TermAdapter extends ArrayAdapter<Term> {
 
     }
 }
+

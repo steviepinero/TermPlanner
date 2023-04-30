@@ -36,36 +36,8 @@ public class MainActivity extends AppCompatActivity {
         termListView = findViewById(R.id.termListView);
         setOnClickListener();
 
-        Button courseDetailButton = findViewById(R.id.courseDetailButton);
-        if (courseDetailButton != null) {
-            courseDetailButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // Handle button click event
-/*
-                    onCourseDetailButtonClick(view);
-*/
-                }
-            });
-        }
     }
 
-/*
-    public void onCourseDetailButtonClick(View view) {
-        // Get the course ID from the intent extras
-        long courseId = getIntent().getLongExtra(Course.COURSE_EDIT_EXTRA, -1);
-        if (courseId == -1) {
-            // The course ID was not found in the intent extras
-            Toast.makeText(this, "Course ID not found", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Launch the CourseDetailActivity and pass the course ID as an extra
-        Intent intent = new Intent(this, CourseDetailActivity.class);
-        intent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
-        startActivity(intent);
-    }
-*/
 
     private void setTermAdapter() {
         TermAdapter termAdapter = new TermAdapter(getApplicationContext(), Term.nonDeletedTerms());
@@ -74,16 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void setOnClickListener()
     {
-        termListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
-            {
-                Term selectedTerm = (Term) termListView.getItemAtPosition(position);
-                Intent editTermIntent = new Intent(getApplicationContext(), TermDetailActivity.class);
-                editTermIntent.putExtra(Term.TERM_EDIT_EXTRA, selectedTerm.getId());
-                startActivity(editTermIntent);
-            }
+        termListView.setOnItemClickListener((adapterView, view, position, l) -> {
+            Term selectedTerm = (Term) termListView.getItemAtPosition(position);
+            Intent editTermIntent = new Intent(getApplicationContext(), TermDetailActivity.class);
+            editTermIntent.putExtra(Term.TERM_EDIT_EXTRA, selectedTerm.getId());
+            startActivity(editTermIntent);
         });
     }
 
