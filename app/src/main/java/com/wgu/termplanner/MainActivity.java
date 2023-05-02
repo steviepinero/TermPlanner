@@ -1,14 +1,11 @@
 package com.wgu.termplanner;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,9 +19,6 @@ public class MainActivity extends AppCompatActivity {
         loadFromDBToMemory();
         setTermAdapter();
         setOnClickListener();
-
-
-
     }
 
     private void loadFromDBToMemory() {
@@ -34,35 +28,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void initWidgets() {
         termListView = findViewById(R.id.termListView);
-        setOnClickListener();
-
     }
-
 
     private void setTermAdapter() {
         TermAdapter termAdapter = new TermAdapter(getApplicationContext(), Term.nonDeletedTerms());
         termListView.setAdapter(termAdapter);
     }
 
-    private void setOnClickListener()
-    {
+    private void setOnClickListener() {
         termListView.setOnItemClickListener((adapterView, view, position, l) -> {
             Term selectedTerm = (Term) termListView.getItemAtPosition(position);
-            Intent editTermIntent = new Intent(getApplicationContext(), TermDetailActivity.class);
-            editTermIntent.putExtra(Term.TERM_EDIT_EXTRA, selectedTerm.getId());
-            startActivity(editTermIntent);
+            Intent termDetailIntent = new Intent(getApplicationContext(), TermDetailActivity.class);
+            termDetailIntent.putExtra(Term.TERM_EDIT_EXTRA, selectedTerm.getId());
+            startActivity(termDetailIntent);
         });
     }
 
     public void newTerm(View view) {
-
         Intent newTermIntent = new Intent(this, TermDetailActivity.class);
         startActivity(newTermIntent);
-
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         setTermAdapter();
     }
