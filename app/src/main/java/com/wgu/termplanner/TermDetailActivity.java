@@ -23,55 +23,41 @@ public class TermDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_term_detail);
         initWidgets();
         checkForEditTerm();
-
-
     }
 
-
     private void initWidgets() {
-
         titleEditText = findViewById(R.id.titleEditText);
         startDateEditText = findViewById(R.id.startDateEditText);
         endDateEditText = findViewById(R.id.endDateEditText);
         deleteButton = findViewById(R.id.deleteTermButton);
-
     }
 
-    private void checkForEditTerm()
-    {
-
+    private void checkForEditTerm() {
         Intent previousIntent = getIntent();
         int passedTermID = previousIntent.getIntExtra(Term.TERM_EDIT_EXTRA, -1);
         selectedTerm = Term.getTermForID(passedTermID);
 
-        if (selectedTerm != null)
-        {
+        if (selectedTerm != null) {
             titleEditText.setText(selectedTerm.getTitle());
             startDateEditText.setText(selectedTerm.getStartDate());
             endDateEditText.setText(selectedTerm.getEndDate());
-        }
-        else
-        {
+        } else {
             deleteButton.setVisibility(View.INVISIBLE);
         }
-
     }
 
     public void saveTerm(View view) {
-
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
-        String title = String.valueOf(titleEditText.getText());
-        String startDate = String.valueOf(startDateEditText.getText());
-        String endDate = String.valueOf(endDateEditText.getText());
+        String title = titleEditText.getText().toString();
+        String startDate = startDateEditText.getText().toString();
+        String endDate = endDateEditText.getText().toString();
 
-        if(selectedTerm == null) {
+        if (selectedTerm == null) {
             int id = Term.termArrayList.size();
             Term newTerm = new Term(id, title, startDate, endDate);
             Term.termArrayList.add(newTerm);
             sqLiteManager.addTermToDatabase(newTerm);
-        }
-        else
-        {
+        } else {
             selectedTerm.setTitle(title);
             selectedTerm.setStartDate(startDate);
             selectedTerm.setEndDate(endDate);
@@ -79,11 +65,9 @@ public class TermDetailActivity extends AppCompatActivity {
         }
 
         finish();
-
     }
 
     public void deleteTerm(View view) {
-
         selectedTerm.setDeleted(new Date());
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         sqLiteManager.updateTermInDatabase(selectedTerm);

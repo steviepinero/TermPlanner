@@ -36,7 +36,7 @@ public class TermAdapter extends ArrayAdapter<Term> {
         TextView title = convertView.findViewById(R.id.cellTitle);
         TextView startDate = convertView.findViewById(R.id.cellStartDate);
         TextView endDate = convertView.findViewById(R.id.cellEndDate);
-        Button courseDetailButton = convertView.findViewById(R.id.courseDetailButton);
+        Button courseDetailButton = convertView.findViewById(R.id.viewCoursesButton);
 
         title.setText(term.getTitle());
         startDate.setText(term.getStartDate());
@@ -64,8 +64,8 @@ public class TermAdapter extends ArrayAdapter<Term> {
         //Courses are saving to DB
 
 
-        // Launch the Course Detail activity, passing in the Term object as an extra
-        Intent intent = new Intent(getContext(), CourseDetailActivity.class);
+        // Launch the Course List activity, passing in the Term object as an extra
+        Intent intent = new Intent(getContext(), CourseListActivity.class);
         intent.putExtra("term", String.valueOf(term));
         getContext().startActivity(intent);
 
