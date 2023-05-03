@@ -33,7 +33,7 @@
             android:backgroundTint="@color/purple_700"
             android:textStyle="bold"
             android:layout_gravity="end"
-            android:onClick="newCourse"/>
+            android:onClick="addCourse"/>
 
     </androidx.appcompat.widget.Toolbar>
     

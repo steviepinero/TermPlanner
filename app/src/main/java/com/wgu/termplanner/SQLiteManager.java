@@ -187,8 +187,21 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
     }
 
-    public void addCourseToDatabase(Course newCourse) {
+    public void addCourseToDatabase(Course course) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Assign values to the columns
+        values.put(DatabaseContract.CourseEntry.COLUMN_TERM_ID, course.getId());
+        values.put(DatabaseContract.CourseEntry.COLUMN_TITLE, course.getTitle());
+        values.put(DatabaseContract.CourseEntry.COLUMN_START_DATE, course.getStartDate());
+        values.put(DatabaseContract.CourseEntry.COLUMN_END_DATE, course.getEndDate());
+
+        // Insert the values into the database
+        db.insert(DatabaseContract.CourseEntry.TABLE_NAME, null, values);
+        db.close();
     }
+
 
     public void updateCourseInDatabase(Course selectedCourse) {
     }

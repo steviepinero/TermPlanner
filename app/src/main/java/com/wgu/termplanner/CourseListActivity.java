@@ -31,9 +31,14 @@ public class CourseListActivity extends AppCompatActivity {
     }
 
     private void setCourseAdapter() {
-        List<Course> courses = (List<Course>) Course.getCourseForID(termId);
-        CourseAdapter courseAdapter = new CourseAdapter(getApplicationContext(), courses);
-        courseListView.setAdapter(courseAdapter);
+        Course courses = Course.getCourseForID(termId);
+
+        if (courses != null) {
+            CourseAdapter courseAdapter = new CourseAdapter(getApplicationContext(), (List<Course>) courses);
+            courseListView.setAdapter(courseAdapter);
+        } else {
+            //TODO display toast message
+        }
     }
 
     private void setOnClickListener() {
