@@ -9,14 +9,14 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Date;
 
-public class CourseDetailActivity extends Activity {
-    private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
-    private Button deleteButton;
-    private RadioGroup statusEditText;
-    private RadioButton inProgress, completed, dropped, planToTake;
+public class CourseDetailActivity extends AppCompatActivity {
 
+    private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
+    private RadioGroup statusRadioGroup;
     private Course selectedCourse;
 
     @Override
@@ -25,61 +25,56 @@ public class CourseDetailActivity extends Activity {
         setContentView(R.layout.activity_course_detail);
         initWidgets();
         checkForEditCourse();
-
     }
 
-
     private void initWidgets() {
-
         titleEditText = findViewById(R.id.titleEditText);
         startDateEditText = findViewById(R.id.startDateEditText);
         endDateEditText = findViewById(R.id.endDateEditText);
         instructorEditText = findViewById(R.id.instructorEditText);
-        statusEditText = findViewById(R.id.statusEditText);
-        deleteButton = findViewById(R.id.deleteCourseButton);
-
+        statusRadioGroup = findViewById(R.id.statusRadioGroup);
     }
 
-    private void checkForEditCourse()
-    {
-
+    private void checkForEditCourse() {
         Intent previousIntent = getIntent();
         int passedCourseID = previousIntent.getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
-        selectedCourse = Course.getCourseForID(passedCourseID);
+        selectedCourse = Course.getCoursesForTermId(passedCourseID);
 
-        if (selectedCourse != null)
-        {
+        if (selectedCourse != null) {
             titleEditText.setText(selectedCourse.getTitle());
             startDateEditText.setText(selectedCourse.getStartDate());
             endDateEditText.setText(selectedCourse.getEndDate());
             instructorEditText.setText(selectedCourse.getInstructor());
-            //radio button instead of text editor
-            statusEditText.setTag(selectedCourse.getStatus());
-        }
-        else
-        {
-            deleteButton.setVisibility(View.INVISIBLE);
-        }
 
+            String status = selectedCourse.getStatus();
+            for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
+                RadioButton radioButton = (RadioButton) statusRadioGroup.getChildAt(i);
+                if (radioButton.getText().toString().equals(status)) {
+                    radioButton.setChecked(true);
+                    break;
+                }
+            }
+        }
     }
 
     public void saveCourse(View view) {
-
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         String title = String.valueOf(titleEditText.getText());
         String startDate = String.valueOf(startDateEditText.getText());
         String endDate = String.valueOf(endDateEditText.getText());
         String instructor = String.valueOf(instructorEditText.getText());
-        String status = String.valueOf(statusEditText.getCheckedRadioButtonId());
 
-        if(selectedCourse == null) {
+        int selectedStatusId = statusRadioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = findViewById(selectedStatusId);
+        String status = selectedRadioButton.getText().toString();
+
+        if (selectedCourse == null) {
             int id = Course.courseArrayList.size();
-            Course newCourse = new Course(id, title, startDate, endDate, instructor, status);
-            Course.courseArrayList.add(newCourse);
-            sqLiteManager.addCourseToDatabase(newCourse);
-        }
-        else
-        {
+            int termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
+            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, termId);
+            Course.courseArrayList.add(selectedCourse);
+            sqLiteManager.addCourseToDatabase(selectedCourse);
+        } else {
             selectedCourse.setTitle(title);
             selectedCourse.setStartDate(startDate);
             selectedCourse.setEndDate(endDate);
@@ -89,17 +84,12 @@ public class CourseDetailActivity extends Activity {
         }
 
         finish();
-
     }
 
     public void deleteCourse(View view) {
-
         selectedCourse.setDeleted(new Date());
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         sqLiteManager.updateCourseInDatabase(selectedCourse);
         finish();
     }
-
-
-
 }

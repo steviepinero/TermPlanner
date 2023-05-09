@@ -3,16 +3,20 @@ package com.wgu.termplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CourseListActivity extends AppCompatActivity {
 
-    private ListView courseListView;
+    private RecyclerView courseRecyclerView;
     private int termId;
+    private CourseAdapter courseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,28 +30,35 @@ public class CourseListActivity extends AppCompatActivity {
         setOnClickListener();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCourseAdapter();
+    }
+
     private void initWidgets() {
-        courseListView = findViewById(R.id.courseListView);
+        courseRecyclerView = findViewById(R.id.courseRecyclerView);
     }
 
     private void setCourseAdapter() {
-        Course courses = Course.getCourseForID(termId);
+        ArrayList<Course> courses = Course.getCoursesForTermId(termId);
 
-        if (courses != null) {
-            CourseAdapter courseAdapter = new CourseAdapter(getApplicationContext(), (List<Course>) courses);
-            courseListView.setAdapter(courseAdapter);
+        if (courses != null && !courses.isEmpty()) {
+            CourseAdapter courseAdapter = new CourseAdapter(getApplicationContext(), courses);
+            courseRecyclerView.setAdapter(courseAdapter);
         } else {
             //TODO display toast message
         }
     }
 
     private void setOnClickListener() {
-        courseListView.setOnItemClickListener((adapterView, view, position, l) -> {
-            Course selectedCourse = (Course) courseListView.getItemAtPosition(position);
-            Intent courseDetailIntent = new Intent(getApplicationContext(), CourseDetailActivity.class);
-            courseDetailIntent.putExtra(Course.COURSE_EDIT_EXTRA, selectedCourse.getId());
-            startActivity(courseDetailIntent);
-        });
+        courseRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), (view, position) -> {
+                    Course selectedCourse = courseAdapter.getItem(position);
+                    Intent courseDetailIntent = new Intent(getApplicationContext(), CourseDetailActivity.class);
+                    courseDetailIntent.putExtra(Course.COURSE_EDIT_EXTRA, selectedCourse.getId());
+                    startActivity(courseDetailIntent);
+                }));
     }
 
     public void addCourse(View view) {
@@ -56,3 +67,4 @@ public class CourseListActivity extends AppCompatActivity {
         startActivity(addCourseIntent);
     }
 }
+

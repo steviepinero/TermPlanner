@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".CourseListActivity"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -15,14 +15,14 @@
         android:theme="?actionBarTheme"
         android:background="@color/purple_700">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Courses"
-        android:textSize="35sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Courses"
+            android:textSize="35sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
 
         <Button
             android:layout_width="wrap_content"
@@ -36,13 +36,11 @@
             android:onClick="addCourse"/>
 
     </androidx.appcompat.widget.Toolbar>
-    
-    <ListView
-        android:id="@+id/courseListView"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/courseRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="3dp"
-        android:dividerHeight="3dp"
-        android:divider="@color/black" />
+        android:layout_marginTop="3dp" />
 
 </LinearLayout>

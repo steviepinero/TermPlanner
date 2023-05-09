@@ -9,38 +9,64 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class CourseAdapter extends ArrayAdapter<Course> {
+public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
+
+    private List<Course> courses;
+    private Context context;
 
     public CourseAdapter(Context context, List<Course> courses) {
-        super(context, 0, courses);
+        this.context = context;
+        this.courses = courses;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_cell, parent, false);
+        return new CourseViewHolder(itemView);
+    }
 
-        Course course = getItem(position);
-        if(convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.course_cell, parent, false);
+    @Override
+    public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
+        Course course = courses.get(position);
 
-        TextView title = convertView.findViewById(R.id.cellTitle);
-        TextView startDate = convertView.findViewById(R.id.cellStartDate);
-        TextView endDate = convertView.findViewById(R.id.cellEndDate);
-        TextView instructor = convertView.findViewById(R.id.cellInstructor);
-        Text status = convertView.findViewById(R.id.cellStatus);
+        holder.title.setText(course.getTitle());
+        holder.startDate.setText(course.getStartDate());
+        holder.endDate.setText(course.getEndDate());
+        holder.instructor.setText(course.getInstructor());
+        holder.status.setText(course.getStatus());
+    }
 
-        title.setText(course.getTitle());
-        startDate.setText(course.getStartDate());
-        endDate.setText((course.getEndDate()));
-        instructor.setText((course.getInstructor()));
-        status.setTextContent(course.getStatus());
+    @Override
+    public int getItemCount() {
+        return courses.size();
+    }
 
-        return convertView;
+    public class CourseViewHolder extends RecyclerView.ViewHolder {
+
+        TextView title, startDate, endDate, instructor, status;
+
+        public CourseViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            title = itemView.findViewById(R.id.cellTitle);
+            startDate = itemView.findViewById(R.id.cellStartDate);
+            endDate = itemView.findViewById(R.id.cellEndDate);
+            instructor = itemView.findViewById(R.id.cellInstructor);
+            status = itemView.findViewById(R.id.cellStatus);
+        }
+    }
+
+    public Course getItem(int position) {
+        return courses.get(position);
     }
 
 }
+
+

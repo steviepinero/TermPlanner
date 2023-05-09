@@ -1,5 +1,7 @@
 package com.wgu.termplanner;
 
+import static android.content.ContentValues.*;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +19,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_NAME = "Term";
     private static final String COUNTER = "Counter";
@@ -26,7 +28,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
     private static final String TITLE_FIELD = "title";
     private static final String START_DATE_FIELD = "startDate";
     private static final String END_DATE_FIELD = "endDate";
+/*
     private static final String DELETED_FIELD = "deleted";
+*/
 
     //Course table columns
     private static final String COURSES_TABLE_NAME = "Courses";
@@ -96,7 +100,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 .append(" TEXT, ")
                 .append(COURSE_TERM_ID_FIELD)
                 .append(" INT, ")
-                .append("FOREIGN KEY(")
+                .append(" FOREIGN KEY(")
                 .append(COURSE_TERM_ID_FIELD)
                 .append(") REFERENCES ")
                 .append(TABLE_NAME)
@@ -111,9 +115,14 @@ public class SQLiteManager extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        if (oldVersion != newVersion) {
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + COURSES_TABLE_NAME);
+            onCreate(sqLiteDatabase);
+        }
     }
+
 
     public void addTermToDatabase(Term term) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -187,22 +196,48 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
     }
 
+    //TODO fix course not showing in list
     public void addCourseToDatabase(Course course) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         // Assign values to the columns
-        values.put(DatabaseContract.CourseEntry.COLUMN_TERM_ID, course.getId());
-        values.put(DatabaseContract.CourseEntry.COLUMN_TITLE, course.getTitle());
-        values.put(DatabaseContract.CourseEntry.COLUMN_START_DATE, course.getStartDate());
-        values.put(DatabaseContract.CourseEntry.COLUMN_END_DATE, course.getEndDate());
+/*
+        values.put(COURSE_ID_FIELD, course.getId());
+*/
+        values.put(COURSE_TITLE_FIELD, course.getTitle());
+        values.put(COURSE_START_DATE_FIELD, course.getStartDate());
+        values.put(COURSE_END_DATE_FIELD, course.getEndDate());
+        values.put(COURSE_INSTRUCTOR_FIELD, course.getInstructor());
+        values.put(COURSE_STATUS_FIELD, course.getStatus());
+        values.put(COURSE_TERM_ID_FIELD, course.getTermId());
+
+
 
         // Insert the values into the database
-        db.insert(DatabaseContract.CourseEntry.TABLE_NAME, null, values);
+        db.insert(COURSES_TABLE_NAME, null, values);
         db.close();
     }
 
 
     public void updateCourseInDatabase(Course selectedCourse) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        // Assign values to the columns
+        contentValues.put(COURSE_ID_FIELD, selectedCourse.getId());
+        contentValues.put(COURSE_TITLE_FIELD, selectedCourse.getTitle());
+        contentValues.put(COURSE_START_DATE_FIELD, selectedCourse.getStartDate());
+        contentValues.put(COURSE_END_DATE_FIELD, selectedCourse.getEndDate());
+        contentValues.put(COURSE_INSTRUCTOR_FIELD, selectedCourse.getInstructor());
+        contentValues.put(COURSE_STATUS_FIELD, selectedCourse.getStatus());
+
+        //might cause an issue bc of getId() method call
+        contentValues.put(COURSE_TERM_ID_FIELD, selectedCourse.getTermId());
+
+
+        sqLiteDatabase.update(COURSES_TABLE_NAME, contentValues, COURSE_ID_FIELD + " =? ", new String[]{String.valueOf(selectedCourse.getId())});
+
+
     }
 }

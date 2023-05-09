@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
         setTermAdapter();
     }
 
-    public void addCourse(View view) {
+  /*  public void addCourse(View view) {
         Intent addCourseIntent = new Intent(this, AddCourseActivity.class);
-      /*  addCourseIntent.putExtra(Term.TERM_EDIT_EXTRA, termId);*/
+      *//*  addCourseIntent.putExtra(Term.TERM_EDIT_EXTRA, termId);*//*
         startActivity(addCourseIntent);
-    }
+    }*/
 }

@@ -22,9 +22,15 @@
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
+  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
+  </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
@@ -211,7 +217,7 @@
     </dataset-grid-settings>
     <dataset-editor-settings>
       <text-editor-popup>
-        <active value="false" />
+        <active value="true" />
         <active-if-empty value="false" />
         <data-length-threshold value="100" />
         <popup-delay value="1000" />
@@ -484,9 +490,9 @@
       </extensions>
       <general>
         <lookup-ddl-files value="true" />
-        <create-ddl-files value="false" />
+        <create-ddl-files value="true" />
         <synchronize-ddl-files value="true" />
-        <use-qualified-names value="false" />
+        <use-qualified-names value="true" />
         <make-scripts-rerunnable value="true" />
       </general>
     </ddl-file-settings>

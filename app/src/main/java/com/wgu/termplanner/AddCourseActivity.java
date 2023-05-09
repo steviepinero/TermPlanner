@@ -5,57 +5,53 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddCourseActivity extends AppCompatActivity {
 
-    private EditText titleEditText, startDateEditText, endDateEditText;
-    private Button saveButton;
+    private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
+    private RadioGroup statusRadioGroup;
     private int termId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
+
+        termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
+
         initWidgets();
-        retrieveTermId();
     }
 
     private void initWidgets() {
         titleEditText = findViewById(R.id.titleEditText);
         startDateEditText = findViewById(R.id.startDateEditText);
         endDateEditText = findViewById(R.id.endDateEditText);
-        saveButton = findViewById(R.id.saveButton);
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveCourse();
-            }
-        });
+        instructorEditText = findViewById(R.id.instructorEditText);
+        statusRadioGroup = findViewById(R.id.statusRadioGroup);
     }
 
-    private void retrieveTermId() {
-        termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
-    }
-
-    private void saveCourse() {
-        String title = titleEditText.getText().toString();
-        String startDate = startDateEditText.getText().toString();
-        String endDate = endDateEditText.getText().toString();
-
-        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(startDate) || TextUtils.isEmpty(endDate)) {
-            Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Course newCourse = new Course(termId, title, startDate, endDate);
+    public void saveCourse(View view) {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        String title = String.valueOf(titleEditText.getText());
+        String startDate = String.valueOf(startDateEditText.getText());
+        String endDate = String.valueOf(endDateEditText.getText());
+        String instructor = String.valueOf(instructorEditText.getText());
+
+        int selectedStatusId = statusRadioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = findViewById(selectedStatusId);
+        String status = selectedRadioButton.getText().toString();
+
+        int id = Course.courseArrayList.size();
+        Course newCourse = new Course(id, title, startDate, endDate, status, instructor, termId);
+        Course.courseArrayList.add(newCourse);
         sqLiteManager.addCourseToDatabase(newCourse);
 
-        Toast.makeText(this, "Course added successfully", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
+

@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Course {
-
     public static ArrayList<Course> courseArrayList = new ArrayList<>();
     public static String COURSE_EDIT_EXTRA = "courseEdit";
-
 
     private int id;
     private String title;
@@ -16,43 +14,26 @@ public class Course {
     private String status;
     private String instructor;
     private Date deleted;
+    private int termId;
 
-
-    public Course(int id, String title, String startDate, String endDate, String status, String instructor) {
+    public Course(int id, String title, String startDate, String endDate, String status, String instructor, int termId) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
         this.instructor = instructor;
+        this.termId = termId;
     }
 
-    public Course(int id, String title, String startDate, String endDate) {
-        this.id = id;
-        this.title = title;
-        this.startDate = startDate;
-        this.endDate = endDate;
-
-    }
-
-    public static Course getCourseForID(int passedCourseID) {
-        for (Course course : courseArrayList)
-        {
-            if(course.getId() == passedCourseID)
-                return course;
+    public static Course getCoursesForTermId(int termId) {
+        ArrayList<Course> coursesForTerm = new ArrayList<>();
+        for (Course course : courseArrayList) {
+            if (course.getTermId() == termId) {
+                coursesForTerm.add(course);
+            }
         }
-        return null;
-    }
-
-    public static ArrayList<Course> nonDeletedCourses() {
-        ArrayList<Course> nonDeleted = new ArrayList<>();
-        for(Course course : courseArrayList)
-        {
-            if(course.getDeleted() == null)
-                nonDeleted.add(course);
-        }
-        return nonDeleted;
-
+        return coursesForTerm;
     }
 
     public int getId() {
@@ -110,4 +91,8 @@ public class Course {
     public void setInstructor(String instructor) {
         this.instructor = instructor;
     }
+
+    public int getTermId() { return termId; }
+
+    public void setTermId() { this.termId = termId;}
 }
