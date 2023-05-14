@@ -16,6 +16,11 @@ public class Course {
     private Date deleted;
     private int termId;
 
+    // variables for assessments and notes
+    private ArrayList<Assessment> assessments;
+    private ArrayList<Note> notes;
+
+
     public Course(int id, String title, String startDate, String endDate, String status, String instructor, int termId) {
         this.id = id;
         this.title = title;
@@ -24,6 +29,9 @@ public class Course {
         this.status = status;
         this.instructor = instructor;
         this.termId = termId;
+
+        this.assessments = new ArrayList<>();
+        this.notes = new ArrayList<>();
     }
 
     public static Course getCourseById(int id) {
@@ -106,4 +114,22 @@ public class Course {
     public int getTermId() { return termId; }
 
     public void setTermId() { this.termId = termId;}
+
+    // Methods for assessments
+    public void addAssessment(Assessment assessment) {
+        this.assessments.add(assessment);
+    }
+
+    public ArrayList<Assessment> getAssessments() {
+        return this.assessments;
+    }
+
+    // New methods for notes
+    public void addNote(Note note) {
+        this.notes.add(note);
+    }
+
+    public ArrayList<Note> getNotes() {
+        return this.notes;
+    }
 }
