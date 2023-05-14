@@ -26,7 +26,17 @@ public class Course {
         this.termId = termId;
     }
 
-    public static Course getCoursesForTermId(int termId) {
+    public static Course getCourseById(int id) {
+        for (Course course : courseArrayList) {
+            if (course.getId() == id) {
+                return course;
+            }
+        }
+        return null; // or throw an exception if course is not found
+    }
+
+
+    public static ArrayList<Course> getCoursesForTermId(int termId) {
         ArrayList<Course> coursesForTerm = new ArrayList<>();
         for (Course course : courseArrayList) {
             if (course.getTermId() == termId) {
@@ -39,6 +49,7 @@ public class Course {
     public int getId() {
         return id;
     }
+
 
     public void setId(int id) {
         this.id = id;

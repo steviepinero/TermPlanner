@@ -38,18 +38,21 @@ public class CourseListActivity extends AppCompatActivity {
 
     private void initWidgets() {
         courseRecyclerView = findViewById(R.id.courseRecyclerView);
+        courseRecyclerView.setLayoutManager(new LinearLayoutManager(this)); // Add this line
+
     }
 
     private void setCourseAdapter() {
         ArrayList<Course> courses = Course.getCoursesForTermId(termId);
 
         if (courses != null && !courses.isEmpty()) {
-            CourseAdapter courseAdapter = new CourseAdapter(getApplicationContext(), courses);
+            courseAdapter = new CourseAdapter(getApplicationContext(), courses); // Here's the change
             courseRecyclerView.setAdapter(courseAdapter);
         } else {
             //TODO display toast message
         }
     }
+
 
     private void setOnClickListener() {
         courseRecyclerView.addOnItemTouchListener(

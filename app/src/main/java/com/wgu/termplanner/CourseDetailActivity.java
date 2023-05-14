@@ -38,7 +38,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private void checkForEditCourse() {
         Intent previousIntent = getIntent();
         int passedCourseID = previousIntent.getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
-        selectedCourse = Course.getCoursesForTermId(passedCourseID);
+        selectedCourse = Course.getCourseById(passedCourseID);
 
         if (selectedCourse != null) {
             titleEditText.setText(selectedCourse.getTitle());
