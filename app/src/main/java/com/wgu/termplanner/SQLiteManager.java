@@ -19,7 +19,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String TABLE_NAME = "Term";
     private static final String COUNTER = "Counter";
@@ -41,6 +41,21 @@ public class SQLiteManager extends SQLiteOpenHelper {
     private static final String COURSE_TERM_ID_FIELD = "termId";
     private static final String COURSE_STATUS_FIELD = "status";
     private static final String COURSE_INSTRUCTOR_FIELD = "instructor";
+
+    //Assessment table columns
+    private static final String ASSESSMENTS_TABLE_NAME = "Assessments";
+    private static final String ASSESSMENT_ID_FIELD = "id";
+    private static final String ASSESSMENT_TITLE_FIELD = "title";
+    private static final String ASSESSMENT_DUE_DATE_FIELD = "dueDate";
+    private static final String ASSESSMENT_TYPE_FIELD = "type";
+    private static final String ASSESSMENT_COURSE_ID_FIELD = "courseId";
+
+    //Note table columns
+    private static final String NOTES_TABLE_NAME = "Notes";
+    private static final String NOTE_ID_FIELD = "id";
+    private static final String NOTE_CONTENT_FIELD = "content";
+    private static final String NOTE_COURSE_ID_FIELD = "courseId";
+
 
     //formatting the date with timestamp
     private static final DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
@@ -111,6 +126,54 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(courseSql.toString());
 
+        StringBuilder assessmentSql;
+        assessmentSql = new StringBuilder()
+                .append("CREATE TABLE ")
+                .append(ASSESSMENTS_TABLE_NAME)
+                .append("(")
+                .append(ASSESSMENT_ID_FIELD)
+                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append(ASSESSMENT_TITLE_FIELD)
+                .append(" TEXT, ")
+                .append(ASSESSMENT_DUE_DATE_FIELD)
+                .append(" TEXT, ")
+                .append(ASSESSMENT_TYPE_FIELD)
+                .append(" TEXT, ")
+                .append(ASSESSMENT_COURSE_ID_FIELD)
+                .append(" INT, ")
+                .append(" FOREIGN KEY(")
+                .append(ASSESSMENT_COURSE_ID_FIELD)
+                .append(") REFERENCES ")
+                .append(COURSES_TABLE_NAME)
+                .append("(")
+                .append(COURSE_ID_FIELD)
+                .append(")")
+                .append(")");
+
+        sqLiteDatabase.execSQL(assessmentSql.toString());
+
+        StringBuilder noteSql;
+        noteSql = new StringBuilder()
+                .append("CREATE TABLE ")
+                .append(NOTES_TABLE_NAME)
+                .append("(")
+                .append(NOTE_ID_FIELD)
+                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append(NOTE_CONTENT_FIELD)
+                .append(" TEXT, ")
+                .append(NOTE_COURSE_ID_FIELD)
+                .append(" INT, ")
+                .append(" FOREIGN KEY(")
+                .append(NOTE_COURSE_ID_FIELD)
+                .append(") REFERENCES ")
+                .append(COURSES_TABLE_NAME)
+                .append("(")
+                .append(COURSE_ID_FIELD)
+                .append(")")
+                .append(")");
+
+        sqLiteDatabase.execSQL(noteSql.toString());
+
 
     }
 
@@ -119,6 +182,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
         if (oldVersion != newVersion) {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + COURSES_TABLE_NAME);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ASSESSMENTS_TABLE_NAME);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + NOTES_TABLE_NAME);
             onCreate(sqLiteDatabase);
         }
     }
@@ -196,7 +261,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
     }
 
-    //TODO fix course not showing in list
     public void addCourseToDatabase(Course course) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -232,7 +296,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(COURSE_INSTRUCTOR_FIELD, selectedCourse.getInstructor());
         contentValues.put(COURSE_STATUS_FIELD, selectedCourse.getStatus());
 
-        //might cause an issue bc of getId() method call
         contentValues.put(COURSE_TERM_ID_FIELD, selectedCourse.getTermId());
 
 
@@ -240,4 +303,59 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
 
     }
+
+    public void addAssessmentToDatabase(Assessment assessment) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(ASSESSMENT_TITLE_FIELD, assessment.getTitle());
+        contentValues.put(ASSESSMENT_DUE_DATE_FIELD, assessment.getDueDate());
+        contentValues.put(ASSESSMENT_TYPE_FIELD, assessment.getAssessmentType());
+        contentValues.put(ASSESSMENT_COURSE_ID_FIELD, assessment.getCourseId());
+
+        sqLiteDatabase.insert(ASSESSMENTS_TABLE_NAME, null, contentValues);
+    }
+
+    public void updateAssessmentInDatabase(Assessment assessment) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(ASSESSMENT_TITLE_FIELD, assessment.getTitle());
+        contentValues.put(ASSESSMENT_DUE_DATE_FIELD, assessment.getDueDate());
+        contentValues.put(ASSESSMENT_TYPE_FIELD, assessment.getAssessmentType());
+        contentValues.put(ASSESSMENT_COURSE_ID_FIELD, assessment.getCourseId());
+
+        sqLiteDatabase.update(ASSESSMENTS_TABLE_NAME, contentValues, ASSESSMENT_ID_FIELD + " =? ", new String[]{String.valueOf(assessment.getId())});
+    }
+
+    public void deleteAssessmentInDatabase(int id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(ASSESSMENTS_TABLE_NAME, ASSESSMENT_ID_FIELD + " =? ", new String[]{String.valueOf(id)});
+    }
+
+    public void addNoteToDatabase(Note note) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(NOTE_CONTENT_FIELD, note.getContent());
+        contentValues.put(NOTE_COURSE_ID_FIELD, note.getCourseId());
+
+        sqLiteDatabase.insert(NOTES_TABLE_NAME, null, contentValues);
+    }
+
+    public void updateNoteInDatabase(Note note) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(NOTE_CONTENT_FIELD, note.getContent());
+        contentValues.put(NOTE_COURSE_ID_FIELD, note.getCourseId());
+
+        sqLiteDatabase.update(NOTES_TABLE_NAME, contentValues, NOTE_ID_FIELD + " =? ", new String[]{String.valueOf(note.getId())});
+    }
+
+    public void deleteNoteInDatabase(int id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(NOTES_TABLE_NAME, NOTE_ID_FIELD + " =? ", new String[]{String.valueOf(id)});
+    }
+
 }

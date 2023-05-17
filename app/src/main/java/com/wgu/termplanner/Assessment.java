@@ -1,12 +1,63 @@
 package com.wgu.termplanner;
 
+import java.util.ArrayList;
+
 public class Assessment {
+    public static ArrayList<Assessment> assessmentArrayList = new ArrayList<>();
+    public static String ASSESSMENT_EDIT_EXTRA = "assessmentEdit";
+
+    private int    id;
     private String title;
     private String dueDate;
+    private String assessmentType;
+    private int    courseId;
 
-    public Assessment(String title, String dueDate) {
+
+
+
+    public Assessment(int id, String title, String dueDate, String assessmentType, int courseId) {
+        this.id = id;
         this.title = title;
         this.dueDate = dueDate;
+        this.assessmentType = assessmentType;
+        this.courseId = courseId;
+    }
+
+
+    public static Assessment getAssessmentById(int id) {
+        for (Assessment assessment : assessmentArrayList) {
+            if (assessment.getId() == id) {
+                return assessment;
+            }
+        }
+        return null; // or throw an exception if course is not found
+    }
+
+    public static ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
+        ArrayList<Assessment> assessmentsForCourse = new ArrayList<>();
+        for (Assessment assessment : assessmentArrayList) {
+            if (assessment.getCourseId() == courseId) {
+                assessmentsForCourse.add(assessment);
+            }
+        }
+        return assessmentsForCourse;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -23,5 +74,13 @@ public class Assessment {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getAssessmentType() {
+        return assessmentType;
+    }
+
+    public void setAssessmentType(String assessmentType) {
+        this.assessmentType = assessmentType;
     }
 }

@@ -1,10 +1,25 @@
 package com.wgu.termplanner;
 
-public class Note {
-    private String content;
+import java.util.ArrayList;
 
-    public Note(String content) {
-        this.content = content;
+public class Note {
+    public static ArrayList<Note> noteArrayList = new ArrayList<>();
+    private int id;
+    private String content;
+    private int courseId;
+
+    public Note(int id, String content, int courseId) {
+        this.id = id;
+        setContent(content);
+        this.courseId = courseId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -12,7 +27,27 @@ public class Note {
     }
 
     public void setContent(String content) {
+        if (content == null || content.isEmpty()) {
+            throw new IllegalArgumentException("Content cannot be null or empty.");
+        }
         this.content = content;
     }
-}
 
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public static ArrayList<Note> getNotesForCourseId(int courseId) {
+        ArrayList<Note> notesForCourse = new ArrayList<>();
+        for (Note note : noteArrayList) {
+            if (note.getCourseId() == courseId) {
+                notesForCourse.add(note);
+            }
+        }
+        return notesForCourse;
+    }
+}

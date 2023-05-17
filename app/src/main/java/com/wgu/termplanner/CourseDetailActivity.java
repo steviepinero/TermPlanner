@@ -10,7 +10,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CourseDetailActivity extends AppCompatActivity {
@@ -18,6 +21,9 @@ public class CourseDetailActivity extends AppCompatActivity {
     private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
     private RadioGroup statusRadioGroup;
     private Course selectedCourse;
+    private RecyclerView assessmentRecyclerView;
+    private AssessmentAdapter assessmentAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,16 @@ public class CourseDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_detail);
         initWidgets();
         checkForEditCourse();
+
+        assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
+        assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+// TODO create a method getAssessmentsForCourseId in Assessment class
+        ArrayList<Assessment> assessments = Assessment.getAssessmentsForCourseId(selectedCourse.getId());
+
+        assessmentAdapter = new AssessmentAdapter(this, assessments);
+        assessmentRecyclerView.setAdapter(assessmentAdapter);
+
     }
 
     private void initWidgets() {
