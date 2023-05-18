@@ -1,6 +1,12 @@
 package com.wgu.termplanner;
 
+import android.app.DatePickerDialog;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Assessment {
     public static ArrayList<Assessment> assessmentArrayList = new ArrayList<>();
@@ -24,14 +30,6 @@ public class Assessment {
     }
 
 
-    public static Assessment getAssessmentById(int id) {
-        for (Assessment assessment : assessmentArrayList) {
-            if (assessment.getId() == id) {
-                return assessment;
-            }
-        }
-        return null; // or throw an exception if course is not found
-    }
 
     public static ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
         ArrayList<Assessment> assessmentsForCourse = new ArrayList<>();
@@ -41,7 +39,11 @@ public class Assessment {
             }
         }
         return assessmentsForCourse;
+
+
+
     }
+
 
     public int getCourseId() {
         return courseId;

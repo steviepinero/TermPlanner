@@ -22,6 +22,7 @@
         <activity android:name=".AddCourseActivity" />
         <activity android:name=".CourseListActivity" />
         <activity android:name=".CourseDetailActivity" />
+        <activity android:name=".AssessmentDetailActivity" />
 
     </application>
 

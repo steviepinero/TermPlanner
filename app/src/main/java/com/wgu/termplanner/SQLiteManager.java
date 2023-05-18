@@ -2,6 +2,8 @@ package com.wgu.termplanner;
 
 import static android.content.ContentValues.*;
 
+import static com.wgu.termplanner.Assessment.assessmentArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,7 +21,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     private static final String TABLE_NAME = "Term";
     private static final String COUNTER = "Counter";
@@ -331,6 +333,15 @@ public class SQLiteManager extends SQLiteOpenHelper {
     public void deleteAssessmentInDatabase(int id) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.delete(ASSESSMENTS_TABLE_NAME, ASSESSMENT_ID_FIELD + " =? ", new String[]{String.valueOf(id)});
+    }
+
+    public static Assessment getAssessmentById(int id) {
+        for (Assessment assessment : assessmentArrayList) {
+            if (assessment.getId() == id) {
+                return assessment;
+            }
+        }
+        return null; // or throw an exception if course is not found
     }
 
     public void addNoteToDatabase(Note note) {

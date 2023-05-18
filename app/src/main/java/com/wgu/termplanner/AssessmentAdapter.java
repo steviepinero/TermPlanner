@@ -43,6 +43,11 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         return assessments.size();
     }
 
+    @Override
+    public Assessment getItem(int position) {
+        return assessments.get(position);
+    }
+
     public class AssessmentViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, endDate, assessmentType;  // I'm just so tired...
