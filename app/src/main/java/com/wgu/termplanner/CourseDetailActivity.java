@@ -40,6 +40,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         assessmentAdapter = new AssessmentAdapter(this, assessments);
         assessmentRecyclerView.setAdapter(assessmentAdapter);
 
+
+
     }
 
     private void initWidgets() {

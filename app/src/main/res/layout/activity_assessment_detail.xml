@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TermDetailActivity"
+    tools:context=".AssessmentDetailActivity"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -33,7 +33,7 @@
             android:backgroundTint="@color/white"
             android:textStyle="bold"
             android:layout_gravity="end"
-            android:onClick="saveTerm"/>
+            android:onClick="saveAssessment"/>
 
     </androidx.appcompat.widget.Toolbar>
 

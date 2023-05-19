@@ -84,7 +84,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:onClick="onAssessmentDetailButtonClick"
-                android:text="View Assessments" />
+                android:text="Assessments"
+                />
+
+            <Button
+                android:id="@+id/editCourseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:onClick="onCourseDetailButtonClick"
+                android:text="Edit" />
 
         </TableRow>
     </TableLayout>

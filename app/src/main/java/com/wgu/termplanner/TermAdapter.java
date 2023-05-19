@@ -60,7 +60,6 @@ public class TermAdapter extends ArrayAdapter<Term> {
         // Get the Term object associated with the button's parent view
         Term term = (Term) view.getTag();
 
-        //TODO fix button to direct to course list, instead of creating a new course
         //Courses are saving to DB
 
 

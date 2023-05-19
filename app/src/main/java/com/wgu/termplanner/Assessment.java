@@ -29,6 +29,14 @@ public class Assessment {
         this.courseId = courseId;
     }
 
+    public Assessment(int id, String title, String dueDate, String assessmentType) {
+        this.id = id;
+        this.title = title;
+        this.dueDate = dueDate;
+        this.assessmentType = assessmentType;
+        this.courseId = courseId;
+    }
+
 
 
     public static ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {

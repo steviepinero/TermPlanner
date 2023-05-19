@@ -85,9 +85,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     }
 
     public void checkForEditAssessment() {
-        // Get assessment from intent or from some kind of storage
-        // This is completely dependent on your application logic
-        // Assuming we get an assessmentId from an intent and load the assessment from the database
+        // Get assessment from intent
         Intent intent = getIntent();
         int assessmentId = intent.getIntExtra("ASSESSMENT_ID", -1);
 
@@ -98,7 +96,6 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     }
 
     private void fillFieldsForEdit() {
-        // Assuming getTitle, getDueDate and getType methods exists
         ((EditText) findViewById(R.id.titleEditText)).setText(assessment.getTitle());
         ((EditText) findViewById(R.id.dueDateEditText)).setText(assessment.getDueDate());
 

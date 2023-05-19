@@ -1,52 +1,78 @@
 package com.wgu.termplanner;
 
+import android.app.DatePickerDialog;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddAssessmentActivity extends AppCompatActivity {
 
-    private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
-    private RadioGroup statusRadioGroup;
-    private int termId;
+    private EditText titleEditText, dueDateEditText;
+    private RadioGroup assessmentRadioGroup;
+    private int courseId, day, month, year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_course);
+        setContentView(R.layout.activity_assessment_detail);
 
-        termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
+        courseId = getIntent().getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
 
         initWidgets();
     }
 
     private void initWidgets() {
         titleEditText = findViewById(R.id.titleEditText);
-        startDateEditText = findViewById(R.id.startDateEditText);
-        endDateEditText = findViewById(R.id.endDateEditText);
-        instructorEditText = findViewById(R.id.instructorEditText);
-        statusRadioGroup = findViewById(R.id.statusRadioGroup);
+        dueDateEditText = findViewById(R.id.endDateEditText);
+        assessmentRadioGroup = findViewById(R.id.assessmentRadioGroup);
+//TODO FIX THE DATE PICKER & IMPLEMENT IT FOR EACH EDIT VIEW
+        if (dueDateEditText != null) {
+            dueDateEditText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Calendar calendar = Calendar.getInstance();
+                    day = calendar.get(Calendar.DAY_OF_MONTH);
+                    month = calendar.get(Calendar.MONTH);
+                    year = calendar.get(Calendar.YEAR);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(AddAssessmentActivity.this,
+                            new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                                    month = month + 1; //Month in DatePickerDialog starts with 0 for January
+                                    String date = dayOfMonth + "/" + month + "/" + year;
+                                    dueDateEditText.setText(date);
+                                }
+                            }, year, month, day);
+                    datePickerDialog.show();
+                }
+            });
+        } else {
+            Toast.makeText(AddAssessmentActivity.this, "Error initializing date field", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
-    public void saveCourse(View view) {
+    public void saveAssessment(View view) {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         String title = String.valueOf(titleEditText.getText());
-        String startDate = String.valueOf(startDateEditText.getText());
-        String endDate = String.valueOf(endDateEditText.getText());
-        String instructor = String.valueOf(instructorEditText.getText());
+        String endDate = String.valueOf(dueDateEditText.getText());
 
-        int selectedStatusId = statusRadioGroup.getCheckedRadioButtonId();
-        RadioButton selectedRadioButton = findViewById(selectedStatusId);
-        String status = selectedRadioButton.getText().toString();
+        int selectedTypeId = assessmentRadioGroup.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = findViewById(selectedTypeId);
+        String type = selectedRadioButton.getText().toString();
 
-        int id = Course.courseArrayList.size();
-        Course newCourse = new Course(id, title, startDate, endDate, status, instructor, termId);
-        Course.courseArrayList.add(newCourse);
-        sqLiteManager.addCourseToDatabase(newCourse);
+        int id = Assessment.assessmentArrayList.size();
+        Assessment newAssessment = new Assessment(id, title, endDate, type, courseId);
+        Assessment.assessmentArrayList.add(newAssessment);
+        sqLiteManager.addAssessmentToDatabase(newAssessment);
 
         finish();
     }

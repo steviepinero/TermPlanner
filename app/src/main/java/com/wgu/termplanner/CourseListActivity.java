@@ -25,6 +25,7 @@ public class CourseListActivity extends AppCompatActivity {
 
         termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
 
+        loadFromDBToMemory();
         initWidgets();
         setCourseAdapter();
         setOnClickListener();
@@ -34,6 +35,11 @@ public class CourseListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setCourseAdapter();
+    }
+
+    private void loadFromDBToMemory() {
+        SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        sqLiteManager.populateCourseListArray();
     }
 
     private void initWidgets() {
@@ -46,7 +52,7 @@ public class CourseListActivity extends AppCompatActivity {
         ArrayList<Course> courses = Course.getCoursesForTermId(termId);
 
         if (courses != null && !courses.isEmpty()) {
-            courseAdapter = new CourseAdapter(getApplicationContext(), courses); // Here's the change
+            courseAdapter = new CourseAdapter(this, courses); // Here's the change
             courseRecyclerView.setAdapter(courseAdapter);
         } else {
             //TODO display toast message
@@ -55,13 +61,13 @@ public class CourseListActivity extends AppCompatActivity {
 
 
     private void setOnClickListener() {
-        courseRecyclerView.addOnItemTouchListener(
+    /*    courseRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), (view, position) -> {
                     Course selectedCourse = courseAdapter.getItem(position);
                     Intent courseDetailIntent = new Intent(getApplicationContext(), CourseDetailActivity.class);
                     courseDetailIntent.putExtra(Course.COURSE_EDIT_EXTRA, selectedCourse.getId());
                     startActivity(courseDetailIntent);
-                }));
+                }));*/
     }
 
     public void addCourse(View view) {

@@ -1,10 +1,12 @@
 package com.wgu.termplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.endDate.setText(course.getEndDate());
         holder.instructor.setText(course.getInstructor());
         holder.status.setText(course.getStatus());
+
+        holder.viewAssessmentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AssessmentListActivity.class);
+                intent.putExtra("COURSE_ID", course.getId());  // Pass the course ID to the AssessmentListActivity
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -51,6 +62,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public class CourseViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, startDate, endDate, instructor, status;
+        Button viewAssessmentsButton;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +72,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             endDate = itemView.findViewById(R.id.cellEndDate);
             instructor = itemView.findViewById(R.id.cellInstructor);
             status = itemView.findViewById(R.id.cellStatus);
+            viewAssessmentsButton = itemView.findViewById(R.id.viewAssessmentsButton);
+
         }
     }
 

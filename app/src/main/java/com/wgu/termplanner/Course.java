@@ -34,6 +34,19 @@ public class Course {
         this.notes = new ArrayList<>();
     }
 
+    public Course(int id, String title, String startDate, String endDate, String status, String instructor) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.instructor = instructor;
+        this.termId = termId;
+
+        this.assessments = new ArrayList<>();
+        this.notes = new ArrayList<>();
+    }
+
     public static Course getCourseById(int id) {
         for (Course course : courseArrayList) {
             if (course.getId() == id) {

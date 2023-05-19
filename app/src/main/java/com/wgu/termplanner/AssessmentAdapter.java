@@ -1,13 +1,13 @@
 package com.wgu.termplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -36,6 +36,17 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         holder.title.setText(assessment.getTitle());
         holder.endDate.setText(assessment.getDueDate());
         holder.assessmentType.setText(assessment.getAssessmentType());
+
+        holder.viewAssessmentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Start the AssessmentListActivity
+                Intent intent = new Intent(view.getContext(), AssessmentListActivity.class);
+                // pass extra data if needed
+                 intent.putExtra("ASSESSMENT_ID", assessment.getId());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -43,13 +54,14 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         return assessments.size();
     }
 
-    @Override
+
     public Assessment getItem(int position) {
         return assessments.get(position);
     }
 
     public class AssessmentViewHolder extends RecyclerView.ViewHolder {
 
+        public View viewAssessmentsButton;
         TextView title, endDate, assessmentType;  // I'm just so tired...
 
         public AssessmentViewHolder(@NonNull View itemView) {

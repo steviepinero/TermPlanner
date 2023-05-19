@@ -203,6 +203,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
+
     }
 
     public void populateTermListArray() {
@@ -285,6 +286,35 @@ public class SQLiteManager extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void populateCourseListArray() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        try (Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + COURSES_TABLE_NAME, null)) {
+            if(result.getCount() != 0)
+            {
+                while(result.moveToNext())
+                {
+                    int id = result.getInt(1);
+                    String title = result.getString(2);
+                    String startDate = result.getString(3);
+                    String endDate = result.getString(4);
+                    String instructor = result.getString(5);
+                    String status = result.getString(6);
+/*
+                    int termId = result.getInt(7);
+*/
+
+                    Date startDateRefactor = getDateFromString(startDate);
+                    Date endDateRefactor = getDateFromString(endDate);
+
+                    Course course = new Course(id, title, startDate, endDate, instructor, status);
+                    Course.courseArrayList.add(course);
+                }
+            }
+        }
+    }
+
+
 
     public void updateCourseInDatabase(Course selectedCourse) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -341,8 +371,30 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 return assessment;
             }
         }
-        return null; // or throw an exception if course is not found
+        return null; // or throw an exception 10-21-2023 if course is not found
     }
+
+    public void populateAssessmentListArray() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        try (Cursor result = sqLiteDatabase.rawQuery("SELECT * FROM " + ASSESSMENTS_TABLE_NAME, null)) {
+            if(result.getCount() != 0)
+            {
+                while(result.moveToNext())
+                {
+                    int id = result.getInt(1);
+                    String title = result.getString(2);
+                    String dueDate = result.getString(3);
+                    String assessmentType = result.getString(4);
+                    int courseId = result.getInt(5);
+
+                    Assessment assessment = new Assessment(id, title, dueDate, assessmentType, courseId);
+                    Assessment.assessmentArrayList.add(assessment);
+                }
+            }
+        }
+    }
+
 
     public void addNoteToDatabase(Note note) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
