@@ -51,11 +51,12 @@
         android:id="@+id/titleEditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
+        android:textSize="25sp"
         android:textStyle="bold"
-        android:layout_gravity="center" />
+        tools:text="@tools:sample/cities" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -107,13 +108,13 @@
         android:id="@+id/dueDateEditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
+        android:textSize="25sp"
         android:textStyle="bold"
-        android:focusable="false"
-        android:clickable="true"
-        android:layout_gravity="center" />
+        android:onClick="showDatePickerDialog"
+        tools:text="@tools:sample/date/mmddyy" />
 
 
     <Button

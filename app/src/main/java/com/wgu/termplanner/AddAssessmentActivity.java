@@ -3,6 +3,7 @@ package com.wgu.termplanner;
 import android.app.DatePickerDialog;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,6 +38,10 @@ public class AddAssessmentActivity extends AppCompatActivity {
             dueDateEditText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d("AddAssessmentActivity", "dueDateEditText onClick called");
+                    Log.println(Log.INFO, "AddAssessmentActivity","dueDateEditText onClick called");
+
+
                     final Calendar calendar = Calendar.getInstance();
                     day = calendar.get(Calendar.DAY_OF_MONTH);
                     month = calendar.get(Calendar.MONTH);

@@ -108,5 +108,8 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             assessmentRadioGroup.check(R.id.objectiveAssessment);
         }
     }
+
+    public void showDatePickerDialog(View view) {
+    }
 }
 

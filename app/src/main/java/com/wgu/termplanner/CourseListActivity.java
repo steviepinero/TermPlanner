@@ -25,7 +25,6 @@ public class CourseListActivity extends AppCompatActivity {
 
         termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
 
-        loadFromDBToMemory();
         initWidgets();
         setCourseAdapter();
         setOnClickListener();
@@ -43,6 +42,8 @@ public class CourseListActivity extends AppCompatActivity {
     }
 
     private void initWidgets() {
+        loadFromDBToMemory();
+
         courseRecyclerView = findViewById(R.id.courseRecyclerView);
         courseRecyclerView.setLayoutManager(new LinearLayoutManager(this)); // Add this line
 
