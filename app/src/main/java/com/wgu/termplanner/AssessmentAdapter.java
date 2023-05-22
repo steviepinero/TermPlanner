@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,14 +38,14 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         holder.endDate.setText(assessment.getDueDate());
         holder.assessmentType.setText(assessment.getAssessmentType());
 
-        holder.viewAssessmentsButton.setOnClickListener(new View.OnClickListener() {
+        holder.editAssessmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Start the AssessmentListActivity
                 Intent intent = new Intent(view.getContext(), AssessmentListActivity.class);
                 // pass extra data if needed
                  intent.putExtra("ASSESSMENT_ID", assessment.getId());
-                view.getContext().startActivity(intent);
+                context.startActivity(intent);
             }
         });
     }
@@ -61,7 +62,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
 
     public class AssessmentViewHolder extends RecyclerView.ViewHolder {
 
-        public View viewAssessmentsButton;
+        Button editAssessmentButton;
         TextView title, endDate, assessmentType;  // I'm just so tired...
 
         public AssessmentViewHolder(@NonNull View itemView) {
@@ -70,6 +71,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             title = itemView.findViewById(R.id.cellTitle);
             endDate = itemView.findViewById(R.id.cellEndDate);
             assessmentType = itemView.findViewById(R.id.cellAssessmentType);
+            editAssessmentButton = itemView.findViewById(R.id.editAssessmentButton);
         }
     }
 }

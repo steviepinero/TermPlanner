@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SQLiteManager extends SQLiteOpenHelper {
@@ -314,7 +315,36 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
+        ArrayList<Assessment> assessmentsForCourse = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        Cursor cursor = db.query(
+                "assessments", // table to query
+                new String[] {"id", "title", "dueDate", "type", "courseId"}, // columns to return
+                "courseId = ?", // columns for the WHERE clause
+                new String[] {String.valueOf(courseId)}, // values for the WHERE clause
+                null, // group rows
+                null, // filter row groups
+                null  // sort order
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String dueDate = cursor.getString(2);
+                String assessmentType = cursor.getString(3);
+                int course_id = cursor.getInt(4);
+
+                assessmentsForCourse.add(new Assessment(id, title, dueDate, assessmentType, course_id));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return assessmentsForCourse;
+    }
 
     public void updateCourseInDatabase(Course selectedCourse) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -382,11 +412,11 @@ public class SQLiteManager extends SQLiteOpenHelper {
             {
                 while(result.moveToNext())
                 {
-                    int id = result.getInt(1);
-                    String title = result.getString(2);
-                    String dueDate = result.getString(3);
-                    String assessmentType = result.getString(4);
-                    int courseId = result.getInt(5);
+                    int id = result.getInt(0);
+                    String title = result.getString(1);
+                    String dueDate = result.getString(2);
+                    String assessmentType = result.getString(3);
+                    int courseId = result.getInt(4);
 
                     Assessment assessment = new Assessment(id, title, dueDate, assessmentType, courseId);
                     Assessment.assessmentArrayList.add(assessment);

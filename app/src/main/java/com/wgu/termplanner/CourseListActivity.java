@@ -62,7 +62,7 @@ public class CourseListActivity extends AppCompatActivity {
 
 
     private void setOnClickListener() {
-    /*    courseRecyclerView.addOnItemTouchListener(
+       /* courseRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), (view, position) -> {
                     Course selectedCourse = courseAdapter.getItem(position);
                     Intent courseDetailIntent = new Intent(getApplicationContext(), CourseDetailActivity.class);

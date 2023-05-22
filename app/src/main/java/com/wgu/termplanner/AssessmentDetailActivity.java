@@ -20,14 +20,17 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String debug = "onCreate in AssessmentDetailActivity";
+        System.out.println(debug);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_detail); // layout
 
+        dueDateEditText = findViewById(R.id.dueDateEditText);
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         checkForEditAssessment();
 
-        dueDateEditText = findViewById(R.id.dueDateEditText);
-        dueDateEditText.setOnClickListener(new View.OnClickListener() {
+        /*dueDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar cldr = Calendar.getInstance();
@@ -44,11 +47,15 @@ public class AssessmentDetailActivity extends AppCompatActivity {
                         }, year, month, day);
                 picker.show();
             }
-        });
+        });*/
         // ... rest of your code
     }
 
     public void saveAssessment(View view) {
+        String debug = "saveAssessment in AssessmentDetailActivity";
+        System.out.println(debug);
+
+
         String title = ((EditText) findViewById(R.id.titleEditText)).getText().toString();
         String dueDate = ((EditText) findViewById(R.id.dueDateEditText)).getText().toString();
 

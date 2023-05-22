@@ -35,7 +35,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
         assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArrayList<Assessment> assessments = Assessment.getAssessmentsForCourseId(selectedCourse.getId());
+        ArrayList<Assessment> assessments = SQLiteManager.instanceOfDatabase(this).getAssessmentsForCourseId(selectedCourse.getId());
 
         assessmentAdapter = new AssessmentAdapter(this, assessments);
         assessmentRecyclerView.setAdapter(assessmentAdapter);
