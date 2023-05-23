@@ -24,7 +24,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private RecyclerView assessmentRecyclerView;
     private AssessmentAdapter assessmentAdapter;
     private SQLiteManager sqLiteManager;
-    private EditText notesEditText;
+    private EditText noteEditText;
 
 
 
@@ -35,7 +35,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         initWidgets();
         checkForEditCourse();
 
-        notesEditText = findViewById(R.id.notesEditText);
+        noteEditText = findViewById(R.id.noteEditText);
 
         assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
         assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +54,15 @@ public class CourseDetailActivity extends AppCompatActivity {
         endDateEditText = findViewById(R.id.endDateEditText);
         instructorEditText = findViewById(R.id.instructorEditText);
         statusRadioGroup = findViewById(R.id.statusRadioGroup);
-        notesEditText = findViewById(R.id.notesEditText);
+        noteEditText = findViewById(R.id.noteEditText);
+        Button shareNoteButton = findViewById(R.id.shareNoteButton);
+        shareNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareNote();
+            }
+        });
+
 
         // Initialize the SQLiteManager
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);
@@ -70,7 +78,12 @@ public class CourseDetailActivity extends AppCompatActivity {
             startDateEditText.setText(selectedCourse.getStartDate());
             endDateEditText.setText(selectedCourse.getEndDate());
             instructorEditText.setText(selectedCourse.getInstructor());
-            notesEditText.setText(selectedCourse.getNotes());
+
+            ArrayList<Note> courseNotes = Note.getNotesForCourseId(selectedCourse.getId());
+            if (!courseNotes.isEmpty()) {
+                Note note = courseNotes.get(0);
+                noteEditText.setText(note.getContent());
+            }
 
 
             String status = selectedCourse.getStatus();
@@ -90,7 +103,18 @@ public class CourseDetailActivity extends AppCompatActivity {
         String startDate = String.valueOf(startDateEditText.getText());
         String endDate = String.valueOf(endDateEditText.getText());
         String instructor = String.valueOf(instructorEditText.getText());
-        String notes = String.valueOf(notesEditText.getText());
+        String noteContent = String.valueOf(noteEditText.getText());
+
+        ArrayList<Note> courseNotes = Note.getNotesForCourseId(selectedCourse.getId());
+        if (!courseNotes.isEmpty()) {
+            // there's only one note per course.
+            Note note = courseNotes.get(0);
+            note.setContent(noteContent);
+            sqLiteManager.updateNoteInDatabase(note);
+        } else {
+            Note note = new Note(0, noteContent, selectedCourse.getId()); // Id auto-increments in the DB.
+            sqLiteManager.addNoteToDatabase(note);
+        }
 
         int selectedStatusId = statusRadioGroup.getCheckedRadioButtonId();
         RadioButton selectedRadioButton = findViewById(selectedStatusId);
@@ -108,12 +132,12 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setEndDate(endDate);
             selectedCourse.setInstructor(instructor);
             selectedCourse.setStatus(status);
-            selectedCourse.setNotes(notes);
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }
 
         finish();
     }
+
 
     public void deleteCourse(View view) {
         selectedCourse.setDeleted(new Date());
@@ -125,4 +149,22 @@ public class CourseDetailActivity extends AppCompatActivity {
     public void onCourseDetailButtonClick(View view) {
 
     }
+
+    public void shareNote() {
+        ArrayList<Note> courseNotes = Note.getNotesForCourseId(selectedCourse.getId());
+        if (!courseNotes.isEmpty()) {
+            Note note = courseNotes.get(0);
+            String noteContent = note.getContent();
+
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, noteContent);
+            shareIntent.setType("text/plain");
+
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
+        }
+    }
+
+
+
 }
