@@ -27,7 +27,6 @@ public class CourseListActivity extends AppCompatActivity {
 
         initWidgets();
         setCourseAdapter();
-        setOnClickListener();
     }
 
     @Override
@@ -50,10 +49,11 @@ public class CourseListActivity extends AppCompatActivity {
     }
 
     private void setCourseAdapter() {
-        ArrayList<Course> courses = Course.getCoursesForTermId(termId);
+        SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        ArrayList<Course> courses = sqLiteManager.getCoursesForTermId(termId);
 
         if (courses != null && !courses.isEmpty()) {
-            courseAdapter = new CourseAdapter(this, courses); // Here's the change
+            courseAdapter = new CourseAdapter(getApplicationContext(), courses);
             courseRecyclerView.setAdapter(courseAdapter);
         } else {
             //TODO display toast message
@@ -61,20 +61,30 @@ public class CourseListActivity extends AppCompatActivity {
     }
 
 
-    private void setOnClickListener() {
-       /* courseRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), (view, position) -> {
-                    Course selectedCourse = courseAdapter.getItem(position);
-                    Intent courseDetailIntent = new Intent(getApplicationContext(), CourseDetailActivity.class);
-                    courseDetailIntent.putExtra(Course.COURSE_EDIT_EXTRA, selectedCourse.getId());
-                    startActivity(courseDetailIntent);
-                }));*/
+    public void onCourseDetailButtonClick(View view) {
+    // Get the course ID
+    int courseId = getIntent().getIntExtra("courseId", -1);
+    if (courseId == -1) {
+        // TODO: Handle the case where the course ID is not available
     }
+
+    // Create an intent for CourseDetailActivity
+    Intent intent = new Intent(this, CourseDetailActivity.class);
+    intent.putExtra("courseId", courseId);
+
+    // Start CourseDetailActivity
+    startActivity(intent);
+}
+
 
     public void addCourse(View view) {
         Intent addCourseIntent = new Intent(this, AddCourseActivity.class);
         addCourseIntent.putExtra(Term.TERM_EDIT_EXTRA, termId);
         startActivity(addCourseIntent);
     }
+
+
+
+
 }
 

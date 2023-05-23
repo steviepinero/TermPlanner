@@ -47,6 +47,16 @@ public class Course {
         this.notes = new ArrayList<>();
     }
 
+    public Course(int id) {
+        this.id = id;
+        this.assessments = new ArrayList<>();
+        this.notes = new ArrayList<>();
+    }
+
+    public Course() {
+
+    }
+
     public static Course getCourseById(int id) {
         for (Course course : courseArrayList) {
             if (course.getId() == id) {
@@ -66,6 +76,8 @@ public class Course {
         }
         return coursesForTerm;
     }
+
+
 
     public int getId() {
         return id;
@@ -126,7 +138,7 @@ public class Course {
 
     public int getTermId() { return termId; }
 
-    public void setTermId() { this.termId = termId;}
+    public void setTermId(int anInt) { this.termId = termId;}
 
     // Methods for assessments
     public void addAssessment(Assessment assessment) {

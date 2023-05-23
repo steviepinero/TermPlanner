@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadFromDBToMemory() {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         sqLiteManager.populateTermListArray();
-        sqLiteManager.populateCourseListArray();
-        sqLiteManager.populateAssessmentListArray();
+
     }
 
     private void initWidgets() {

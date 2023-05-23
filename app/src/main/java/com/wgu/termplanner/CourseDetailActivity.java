@@ -23,6 +23,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private Course selectedCourse;
     private RecyclerView assessmentRecyclerView;
     private AssessmentAdapter assessmentAdapter;
+    private SQLiteManager sqLiteManager;
 
 
     @Override
@@ -35,13 +36,10 @@ public class CourseDetailActivity extends AppCompatActivity {
         assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
         assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArrayList<Assessment> assessments = SQLiteManager.instanceOfDatabase(this).getAssessmentsForCourseId(selectedCourse.getId());
+        ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(selectedCourse.getId());
 
         assessmentAdapter = new AssessmentAdapter(this, assessments);
         assessmentRecyclerView.setAdapter(assessmentAdapter);
-
-
-
     }
 
     private void initWidgets() {
@@ -50,12 +48,15 @@ public class CourseDetailActivity extends AppCompatActivity {
         endDateEditText = findViewById(R.id.endDateEditText);
         instructorEditText = findViewById(R.id.instructorEditText);
         statusRadioGroup = findViewById(R.id.statusRadioGroup);
+
+        // Initialize the SQLiteManager
+        sqLiteManager = SQLiteManager.instanceOfDatabase(this);
     }
 
     private void checkForEditCourse() {
         Intent previousIntent = getIntent();
         int passedCourseID = previousIntent.getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
-        selectedCourse = Course.getCourseById(passedCourseID);
+        selectedCourse = sqLiteManager.getCourseById(passedCourseID);
 
         if (selectedCourse != null) {
             titleEditText.setText(selectedCourse.getTitle());
@@ -108,5 +109,9 @@ public class CourseDetailActivity extends AppCompatActivity {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         sqLiteManager.updateCourseInDatabase(selectedCourse);
         finish();
+    }
+
+    public void onCourseDetailButtonClick(View view) {
+
     }
 }

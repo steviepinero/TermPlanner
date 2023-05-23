@@ -266,7 +266,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     }
 
     public void addCourseToDatabase(Course course) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = sqLiteManager.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         // Assign values to the columns
@@ -314,6 +314,29 @@ public class SQLiteManager extends SQLiteOpenHelper {
             }
         }
     }
+
+    public Course getCourseById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + COURSES_TABLE_NAME + " WHERE " + COURSE_TERM_ID_FIELD + " = " + id;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        // Create a Course object from the cursor
+        Course course = new Course(id);
+        course.setId(cursor.getInt(0));
+        course.setTitle(cursor.getString(1));
+        course.setStartDate(cursor.getString(2));
+        course.setEndDate(cursor.getString(3));
+        course.setInstructor(cursor.getString(4));
+        course.setStatus(cursor.getString(5));
+        course.setTermId(cursor.getInt(6));
+
+        cursor.close();
+        return course;
+    }
+
 
     public ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
         ArrayList<Assessment> assessmentsForCourse = new ArrayList<>();
@@ -365,6 +388,43 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
 
     }
+
+    public ArrayList<Course> getCoursesForTermId(int termId) {
+        ArrayList<Course> courses = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + COURSES_TABLE_NAME + " WHERE termId = ?";
+
+        Cursor cursor = db.query(
+                "courses", // table to query
+                new String[] {"id", "title", "startDate", "endDate", "instructor", "status","termId"}, // columns to return
+                "termId = ?", // columns for the WHERE clause
+                new String[] {String.valueOf(termId)}, // values for the WHERE clause
+                null, // group rows
+                null, // filter row groups
+                null  // sort order
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                Course course = new Course();
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String startDate = cursor.getString(2);
+                String endDate = cursor.getString(3);
+                String instructorName = cursor.getString(4);
+                String status = cursor.getString(5);
+                int term_Id = cursor.getInt(6);
+
+                courses.add(new Course(id, title, startDate, endDate, instructorName, status, term_Id));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return courses;
+    }
+
 
     public void addAssessmentToDatabase(Assessment assessment) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

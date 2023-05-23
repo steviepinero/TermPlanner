@@ -34,7 +34,15 @@ public class AssessmentListActivity extends AppCompatActivity {
         setAssessmentAdapter();
     }
 
+    private void loadFromDBToMemory() {
+        SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        sqLiteManager.populateAssessmentListArray();
+    }
+
     private void initWidgets() {
+        loadFromDBToMemory();
+
+
         assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
         assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
