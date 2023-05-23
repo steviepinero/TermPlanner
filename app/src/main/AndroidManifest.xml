@@ -18,6 +18,14 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".MyAlarmReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.codepath.example.alarm.ACTION" />
+            </intent-filter>
+        </receiver>
+
+
         <activity android:name=".TermDetailActivity" />
         <activity android:name=".AddCourseActivity" />
         <activity android:name=".CourseListActivity" />

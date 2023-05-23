@@ -320,21 +320,23 @@ public class SQLiteManager extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + COURSES_TABLE_NAME + " WHERE " + COURSE_TERM_ID_FIELD + " = " + id;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-        // Create a Course object from the cursor
-        Course course = new Course(id);
-        course.setId(cursor.getInt(0));
-        course.setTitle(cursor.getString(1));
-        course.setStartDate(cursor.getString(2));
-        course.setEndDate(cursor.getString(3));
-        course.setInstructor(cursor.getString(4));
-        course.setStatus(cursor.getString(5));
-        course.setTermId(cursor.getInt(6));
+            // Create a Course object from the cursor
+            Course course = new Course(id);
+            course.setId(cursor.getInt(0));
+            course.setTitle(cursor.getString(1));
+            course.setStartDate(cursor.getString(2));
+            course.setEndDate(cursor.getString(3));
+            course.setInstructor(cursor.getString(4));
+            course.setStatus(cursor.getString(5));
+            course.setTermId(cursor.getInt(6));
 
-        cursor.close();
-        return course;
+            cursor.close();
+            return course;
+        } else {
+            return null;
+        }
     }
 
 
@@ -393,7 +395,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 null  // sort order
         );
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 Course course = new Course();
                 int id = cursor.getInt(0);

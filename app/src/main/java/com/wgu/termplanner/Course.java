@@ -61,15 +61,6 @@ public class Course {
 
     }
 
-    public static Course getCourseById(int id) {
-        for (Course course : courseArrayList) {
-            if (course.getId() == id) {
-                return course;
-            }
-        }
-        return null; // or throw an exception if course is not found
-    }
-
 
     public static ArrayList<Course> getCoursesForTermId(int termId) {
         ArrayList<Course> coursesForTerm = new ArrayList<>();

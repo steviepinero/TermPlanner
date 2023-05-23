@@ -27,9 +27,6 @@ public class Note {
     }
 
     public void setContent(String content) {
-        if (content == null || content.isEmpty()) {
-            throw new IllegalArgumentException("Content cannot be null or empty.");
-        }
         this.content = content;
     }
 

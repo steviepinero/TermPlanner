@@ -1,6 +1,9 @@
 package com.wgu.termplanner;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -163,6 +166,19 @@ public class CourseDetailActivity extends AppCompatActivity {
 
             startActivity(Intent.createChooser(shareIntent, "Share via"));
         }
+    }
+
+    public void scheduleAlarm(long time) {
+        Intent intent = new Intent(this, MyAlarmReceiver.class);
+        intent.setAction(MyAlarmReceiver.ACTION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Getting the alarm manager service
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // Setting the alarm. This will be triggered once at the specified date and time
+        // Note: 'time' should be in milliseconds
+        am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
     }
 
 
