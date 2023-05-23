@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CourseDetailActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -172,5 +173,10 @@
         android:layout_gravity="center"
         android:onClick="deleteCourse"/>
 
+    <EditText
+        android:id="@+id/notesEditText"
+        android:layout_width="match_parent"
+        android:layout_height="163dp"
+        android:hint="Notes" />
 
 </LinearLayout>

@@ -91,7 +91,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         public void onCourseDetailButtonClick(View view) {
             // Perform action on click here
-            // For example, starting another activity or changing the UI
         }
 
     }

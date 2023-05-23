@@ -340,32 +340,20 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     public ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
         ArrayList<Assessment> assessmentsForCourse = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(
-                "assessments", // table to query
-                new String[] {"id", "title", "dueDate", "type", "courseId"}, // columns to return
-                "courseId = ?", // columns for the WHERE clause
-                new String[] {String.valueOf(courseId)}, // values for the WHERE clause
-                null, // group rows
-                null, // filter row groups
-                null  // sort order
-        );
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM assessments WHERE courseId = ?",
+                new String[] { String.valueOf(courseId) });
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(0);
-                String title = cursor.getString(1);
-                String dueDate = cursor.getString(2);
-                String assessmentType = cursor.getString(3);
-                int course_id = cursor.getInt(4);
-
-                assessmentsForCourse.add(new Assessment(id, title, dueDate, assessmentType, course_id));
+                // Assuming Assessment has a constructor that takes a Cursor
+                assessmentsForCourse.add(new Assessment(cursor));
             } while (cursor.moveToNext());
         }
 
         cursor.close();
-
         return assessmentsForCourse;
     }
 

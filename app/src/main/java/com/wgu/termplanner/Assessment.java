@@ -1,6 +1,7 @@
 package com.wgu.termplanner;
 
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,6 +38,8 @@ public class Assessment {
         this.courseId = courseId;
     }
 
+    public Assessment(Cursor cursor) {
+    }
 
 
     public static ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {

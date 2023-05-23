@@ -36,6 +36,7 @@ public class AssessmentListActivity extends AppCompatActivity {
 
     private void loadFromDBToMemory() {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        Assessment.assessmentArrayList.clear(); // Clear the list before populating
         sqLiteManager.populateAssessmentListArray();
     }
 

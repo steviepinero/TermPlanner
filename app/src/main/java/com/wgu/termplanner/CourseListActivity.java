@@ -37,6 +37,7 @@ public class CourseListActivity extends AppCompatActivity {
 
     private void loadFromDBToMemory() {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        Course.courseArrayList.clear(); // Clear the list before populating
         sqLiteManager.populateCourseListArray();
     }
 
