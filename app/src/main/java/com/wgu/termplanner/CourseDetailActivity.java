@@ -24,6 +24,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     private RecyclerView assessmentRecyclerView;
     private AssessmentAdapter assessmentAdapter;
     private SQLiteManager sqLiteManager;
+    private EditText notesEditText;
+
 
 
     @Override
@@ -33,6 +35,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         initWidgets();
         checkForEditCourse();
 
+        notesEditText = findViewById(R.id.notesEditText);
+
         assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
         assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -40,7 +44,9 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         assessmentAdapter = new AssessmentAdapter(this, assessments);
         assessmentRecyclerView.setAdapter(assessmentAdapter);
+
     }
+
 
     private void initWidgets() {
         titleEditText = findViewById(R.id.titleEditText);
@@ -48,6 +54,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         endDateEditText = findViewById(R.id.endDateEditText);
         instructorEditText = findViewById(R.id.instructorEditText);
         statusRadioGroup = findViewById(R.id.statusRadioGroup);
+        notesEditText = findViewById(R.id.notesEditText);
 
         // Initialize the SQLiteManager
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);
@@ -63,6 +70,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             startDateEditText.setText(selectedCourse.getStartDate());
             endDateEditText.setText(selectedCourse.getEndDate());
             instructorEditText.setText(selectedCourse.getInstructor());
+            notesEditText.setText(selectedCourse.getNotes());
+
 
             String status = selectedCourse.getStatus();
             for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
@@ -81,6 +90,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         String startDate = String.valueOf(startDateEditText.getText());
         String endDate = String.valueOf(endDateEditText.getText());
         String instructor = String.valueOf(instructorEditText.getText());
+        String notes = String.valueOf(notesEditText.getText());
 
         int selectedStatusId = statusRadioGroup.getCheckedRadioButtonId();
         RadioButton selectedRadioButton = findViewById(selectedStatusId);
@@ -98,6 +108,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setEndDate(endDate);
             selectedCourse.setInstructor(instructor);
             selectedCourse.setStatus(status);
+            selectedCourse.setNotes(notes);
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }
 

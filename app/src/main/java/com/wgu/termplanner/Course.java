@@ -18,7 +18,11 @@ public class Course {
 
     // variables for assessments and notes
     private ArrayList<Assessment> assessments;
+    private String notes;
+
+/*
     private ArrayList<Note> notes;
+*/
 
 
     public Course(int id, String title, String startDate, String endDate, String status, String instructor, int termId) {
@@ -31,7 +35,7 @@ public class Course {
         this.termId = termId;
 
         this.assessments = new ArrayList<>();
-        this.notes = new ArrayList<>();
+        this.notes = notes;
     }
 
     public Course(int id, String title, String startDate, String endDate, String status, String instructor) {
@@ -44,13 +48,13 @@ public class Course {
         this.termId = termId;
 
         this.assessments = new ArrayList<>();
-        this.notes = new ArrayList<>();
+        this.notes = notes;
     }
 
     public Course(int id) {
         this.id = id;
         this.assessments = new ArrayList<>();
-        this.notes = new ArrayList<>();
+        this.notes = notes;
     }
 
     public Course() {
@@ -150,11 +154,11 @@ public class Course {
     }
 
     // New methods for notes
-    public void addNote(Note note) {
-        this.notes.add(note);
+    public String getNotes() {
+        return notes;
     }
 
-    public ArrayList<Note> getNotes() {
-        return this.notes;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
