@@ -270,9 +270,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         // Assign values to the columns
-/*
         values.put(COURSE_ID_FIELD, course.getId());
-*/
         values.put(COURSE_TITLE_FIELD, course.getTitle());
         values.put(COURSE_START_DATE_FIELD, course.getStartDate());
         values.put(COURSE_END_DATE_FIELD, course.getEndDate());
@@ -295,20 +293,18 @@ public class SQLiteManager extends SQLiteOpenHelper {
             {
                 while(result.moveToNext())
                 {
-                    int id = result.getInt(1);
-                    String title = result.getString(2);
-                    String startDate = result.getString(3);
-                    String endDate = result.getString(4);
-                    String instructor = result.getString(5);
-                    String status = result.getString(6);
-/*
-                    int termId = result.getInt(7);
-*/
+                    int id = result.getInt(0);
+                    String title = result.getString(1);
+                    String startDate = result.getString(2);
+                    String endDate = result.getString(3);
+                    String instructor = result.getString(4);
+                    String status = result.getString(5);
+                    int termId = result.getInt(6);
 
                     Date startDateRefactor = getDateFromString(startDate);
                     Date endDateRefactor = getDateFromString(endDate);
 
-                    Course course = new Course(id, title, startDate, endDate, instructor, status);
+                    Course course = new Course(id, title, startDate, endDate, instructor, status, termId);
                     Course.courseArrayList.add(course);
                 }
             }
@@ -451,7 +447,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 return assessment;
             }
         }
-        return null; // or throw an exception 10-21-2023 if course is not found
+        return null;
     }
 
     public void populateAssessmentListArray() {

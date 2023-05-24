@@ -98,12 +98,14 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
         if (assessmentId != -1) {
             this.assessment = sqLiteManager.getAssessmentById(assessmentId);
+
             fillFieldsForEdit();
         }
     }
 
     private void fillFieldsForEdit() {
         ((EditText) findViewById(R.id.titleEditText)).setText(assessment.getTitle());
+
         ((EditText) findViewById(R.id.dueDateEditText)).setText(assessment.getDueDate());
 
         RadioGroup assessmentRadioGroup = findViewById(R.id.assessmentRadioGroup);
