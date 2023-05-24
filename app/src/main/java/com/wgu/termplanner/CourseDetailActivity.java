@@ -137,10 +137,11 @@ public class CourseDetailActivity extends AppCompatActivity {
         RadioButton selectedRadioButton = findViewById(selectedStatusId);
         String status = selectedRadioButton.getText().toString();
 
+        int termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1); // Retrieve termId from intent
+
         if (selectedCourse == null) {
             int id = Course.courseArrayList.size();
-            int termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
-            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, termId);
+            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, termId); // Pass termId when creating new course
             Course.courseArrayList.add(selectedCourse);
             sqLiteManager.addCourseToDatabase(selectedCourse);
         } else {
@@ -151,7 +152,6 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setStatus(status);
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }
-
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyy");
 
         Date firstDate = null;

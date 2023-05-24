@@ -42,6 +42,8 @@ public class TermAdapter extends ArrayAdapter<Term> {
         startDate.setText(term.getStartDate());
         endDate.setText((term.getEndDate()));
 
+        courseDetailButton.setTag(term); // Set the Term object as a tag on the button
+
         courseDetailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,6 +54,7 @@ public class TermAdapter extends ArrayAdapter<Term> {
         return convertView;
     }
 
+
     // Method to handle button click
     private void onCourseDetailButtonClick(View view) {
         String debug = "OnCourseDetailButtonClick in TermAdapter";
@@ -60,14 +63,11 @@ public class TermAdapter extends ArrayAdapter<Term> {
         // Get the Term object associated with the button's parent view
         Term term = (Term) view.getTag();
 
-        //Courses are saving to DB
-
-
-        // Launch the Course List activity, passing in the Term object as an extra
+        // Launch the Course List activity, passing in the termId as an extra
         Intent intent = new Intent(getContext(), CourseListActivity.class);
-        intent.putExtra("term", String.valueOf(term));
+        intent.putExtra(Term.TERM_EDIT_EXTRA, term.getId());
         getContext().startActivity(intent);
-
     }
+
 }
 

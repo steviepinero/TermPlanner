@@ -196,7 +196,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
+/*
         contentValues.put(ID_FIELD, term.getId());
+*/
         contentValues.put(TITLE_FIELD, term.getTitle());
         contentValues.put(START_DATE_FIELD, term.getStartDate());
         contentValues.put(END_DATE_FIELD, term.getEndDate());
@@ -270,7 +272,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         // Assign values to the columns
+/*
         values.put(COURSE_ID_FIELD, course.getId());
+*/
         values.put(COURSE_TITLE_FIELD, course.getTitle());
         values.put(COURSE_START_DATE_FIELD, course.getStartDate());
         values.put(COURSE_END_DATE_FIELD, course.getEndDate());
