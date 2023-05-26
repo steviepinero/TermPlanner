@@ -3,6 +3,7 @@ package com.wgu.termplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -45,7 +46,7 @@ public class CourseListActivity extends AppCompatActivity {
         loadFromDBToMemory();
 
         courseRecyclerView = findViewById(R.id.courseRecyclerView);
-        courseRecyclerView.setLayoutManager(new LinearLayoutManager(this)); // Add this line
+        courseRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -57,16 +58,16 @@ public class CourseListActivity extends AppCompatActivity {
             courseAdapter = new CourseAdapter(getApplicationContext(), courses);
             courseRecyclerView.setAdapter(courseAdapter);
         } else {
-            //TODO display toast message
+            Toast.makeText(this, "Course is null or empty", Toast.LENGTH_SHORT).show();
         }
     }
 
 
     public void onCourseDetailButtonClick(View view) {
     // Get the course ID
-    int courseId = getIntent().getIntExtra("courseId", -1);
+    int courseId = getIntent().getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
     if (courseId == -1) {
-        // TODO: Handle the case where the course ID is not available
+        Toast.makeText(this, "Course is null or empty", Toast.LENGTH_SHORT).show();
     }
 
     // Create an intent for CourseDetailActivity

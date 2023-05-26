@@ -16,12 +16,12 @@ public class Course {
     private Date deleted;
     private int termId;
 
-    // variables for assessments and notes
+    // variables for assessments and note
     private ArrayList<Assessment> assessments;
-    private String notes;
+    private String note;
 
 /*
-    private ArrayList<Note> notes;
+    private ArrayList<Note> note;
 */
 
 
@@ -35,7 +35,7 @@ public class Course {
         this.termId = termId;
 
         this.assessments = new ArrayList<>();
-        this.notes = notes;
+        this.note = note;
     }
 
     public Course(int id, String title, String startDate, String endDate, String status, String instructor) {
@@ -48,17 +48,44 @@ public class Course {
         this.termId = termId;
 
         this.assessments = new ArrayList<>();
-        this.notes = notes;
+        this.note = note;
     }
 
     public Course(int id) {
         this.id = id;
         this.assessments = new ArrayList<>();
-        this.notes = notes;
+        this.note = note;
     }
 
     public Course() {
 
+    }
+
+    public Course(int id, String title, String startDate, String endDate, String instructor, String status, String note, int termId) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.instructor = instructor;
+        this.termId = termId;
+
+        this.assessments = new ArrayList<>();
+        this.note = note;
+
+    }
+
+    public Course(String title, String startDate, String endDate, int termId, String status, String instructor, String note) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.instructor = instructor;
+        this.termId = termId;
+
+        this.assessments = new ArrayList<>();
+        this.note = note;
     }
 
 
@@ -144,12 +171,12 @@ public class Course {
         return this.assessments;
     }
 
-    // New methods for notes
-    public String getNotes() {
-        return notes;
+    // New methods for note
+    public String getNote() {
+        return note;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setNote(String note) {
+        this.note = note;
     }
 }

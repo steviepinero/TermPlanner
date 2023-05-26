@@ -1,7 +1,5 @@
 package com.wgu.termplanner;
 
-import static android.content.ContentValues.*;
-
 import static com.wgu.termplanner.Assessment.assessmentArrayList;
 
 import android.content.ContentValues;
@@ -9,8 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import androidx.annotation.Nullable;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,10 +18,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 9;
 
     private static final String TABLE_NAME = "Term";
-    private static final String COUNTER = "Counter";
     //Term table columns
     private static final String ID_FIELD = "id";
     private static final String TITLE_FIELD = "title";
@@ -44,6 +39,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     private static final String COURSE_TERM_ID_FIELD = "termId";
     private static final String COURSE_STATUS_FIELD = "status";
     private static final String COURSE_INSTRUCTOR_FIELD = "instructor";
+    private static final String COURSE_NOTE_FIELD = "note";
 
     //Assessment table columns
     private static final String ASSESSMENTS_TABLE_NAME = "Assessments";
@@ -53,11 +49,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
     private static final String ASSESSMENT_TYPE_FIELD = "type";
     private static final String ASSESSMENT_COURSE_ID_FIELD = "courseId";
 
-    //Note table columns
-    private static final String NOTES_TABLE_NAME = "Notes";
-    private static final String NOTE_ID_FIELD = "id";
-    private static final String NOTE_CONTENT_FIELD = "content";
-    private static final String NOTE_COURSE_ID_FIELD = "courseId";
 
 
     //formatting the date with timestamp
@@ -84,17 +75,13 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 .append("CREATE TABLE ")
                 .append(TABLE_NAME)
                 .append("(")
-                .append(COUNTER)
-                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append(ID_FIELD)
-                .append(" INT, ")
+                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append(TITLE_FIELD)
                 .append(" TEXT, ")
                 .append(START_DATE_FIELD)
                 .append(" TEXT, ")
                 .append(END_DATE_FIELD)
-                /*.append(" TEXT, ")
-                .append(DELETED_FIELD)*/
                 .append( " TEXT)");
 
         sqLiteDatabase.execSQL(termSql.toString());
@@ -116,6 +103,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 .append(" TEXT, ")
                 .append(COURSE_STATUS_FIELD)
                 .append(" TEXT, ")
+                .append(COURSE_NOTE_FIELD)  // New note field
+                .append(" TEXT, ")
                 .append(COURSE_TERM_ID_FIELD)
                 .append(" INT, ")
                 .append(" FOREIGN KEY(")
@@ -128,6 +117,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 .append(")");
 
         sqLiteDatabase.execSQL(courseSql.toString());
+
+
 
         StringBuilder assessmentSql;
         assessmentSql = new StringBuilder()
@@ -155,28 +146,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(assessmentSql.toString());
 
-        StringBuilder noteSql;
-        noteSql = new StringBuilder()
-                .append("CREATE TABLE ")
-                .append(NOTES_TABLE_NAME)
-                .append("(")
-                .append(NOTE_ID_FIELD)
-                .append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
-                .append(NOTE_CONTENT_FIELD)
-                .append(" TEXT, ")
-                .append(NOTE_COURSE_ID_FIELD)
-                .append(" INT, ")
-                .append(" FOREIGN KEY(")
-                .append(NOTE_COURSE_ID_FIELD)
-                .append(") REFERENCES ")
-                .append(COURSES_TABLE_NAME)
-                .append("(")
-                .append(COURSE_ID_FIELD)
-                .append(")")
-                .append(")");
-
-        sqLiteDatabase.execSQL(noteSql.toString());
-
 
     }
 
@@ -186,8 +155,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + COURSES_TABLE_NAME);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ASSESSMENTS_TABLE_NAME);
-            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + NOTES_TABLE_NAME);
             onCreate(sqLiteDatabase);
+
         }
     }
 
@@ -196,13 +165,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-/*
         contentValues.put(ID_FIELD, term.getId());
-*/
         contentValues.put(TITLE_FIELD, term.getTitle());
         contentValues.put(START_DATE_FIELD, term.getStartDate());
         contentValues.put(END_DATE_FIELD, term.getEndDate());
-      /*  contentValues.put(DELETED_FIELD, getStringFromDate(term.getDeleted()));*/
 
         sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
@@ -217,10 +183,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
             {
                 while(result.moveToNext())
                 {
-                    int id = result.getInt(1);
-                    String title = result.getString(2);
-                    String startDate = result.getString(3);
-                    String endDate = result.getString(4);
+                    int id = result.getInt(0);
+                    String title = result.getString(1);
+                    String startDate = result.getString(2);
+                    String endDate = result.getString(3);
                     /*String stringDeleted = result.getString(5);
                     Date deleted = getDateFromString(stringDeleted);*/
 
@@ -271,6 +237,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
         SQLiteDatabase db = sqLiteManager.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+
+
         // Assign values to the columns
 /*
         values.put(COURSE_ID_FIELD, course.getId());
@@ -280,12 +248,17 @@ public class SQLiteManager extends SQLiteOpenHelper {
         values.put(COURSE_END_DATE_FIELD, course.getEndDate());
         values.put(COURSE_INSTRUCTOR_FIELD, course.getInstructor());
         values.put(COURSE_STATUS_FIELD, course.getStatus());
+        values.put(COURSE_NOTE_FIELD, course.getNote());
         values.put(COURSE_TERM_ID_FIELD, course.getTermId());
+
+
 
 
 
         // Insert the values into the database
         db.insert(COURSES_TABLE_NAME, null, values);
+
+
         db.close();
     }
 
@@ -303,12 +276,13 @@ public class SQLiteManager extends SQLiteOpenHelper {
                     String endDate = result.getString(3);
                     String instructor = result.getString(4);
                     String status = result.getString(5);
-                    int termId = result.getInt(6);
+                    String note = result.getString(6);
+                    int termId = result.getInt(7);
 
                     Date startDateRefactor = getDateFromString(startDate);
                     Date endDateRefactor = getDateFromString(endDate);
 
-                    Course course = new Course(id, title, startDate, endDate, instructor, status, termId);
+                    Course course = new Course(id, title, startDate, endDate, instructor, status, note, termId);
                     Course.courseArrayList.add(course);
                 }
             }
@@ -330,7 +304,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
             course.setEndDate(cursor.getString(3));
             course.setInstructor(cursor.getString(4));
             course.setStatus(cursor.getString(5));
-            course.setTermId(cursor.getInt(6));
+            course.setNote(cursor.getString(6));
+            course.setTermId(cursor.getInt(7));
 
             cursor.close();
             return course;
@@ -370,7 +345,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(COURSE_END_DATE_FIELD, selectedCourse.getEndDate());
         contentValues.put(COURSE_INSTRUCTOR_FIELD, selectedCourse.getInstructor());
         contentValues.put(COURSE_STATUS_FIELD, selectedCourse.getStatus());
-
+        contentValues.put(COURSE_NOTE_FIELD, selectedCourse.getNote());
         contentValues.put(COURSE_TERM_ID_FIELD, selectedCourse.getTermId());
 
 
@@ -475,30 +450,52 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
     }
 
-
-    public void addNoteToDatabase(Note note) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+    public Term createTerm(String title, String startDate, String endDate) {
+        Term term = new Term(title, startDate, endDate); // Assuming you have a constructor like this
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-
-        contentValues.put(NOTE_CONTENT_FIELD, note.getContent());
-        contentValues.put(NOTE_COURSE_ID_FIELD, note.getCourseId());
-
-        sqLiteDatabase.insert(NOTES_TABLE_NAME, null, contentValues);
+        contentValues.put(TITLE_FIELD, term.getTitle());
+        contentValues.put(START_DATE_FIELD, term.getStartDate());
+        contentValues.put(END_DATE_FIELD, term.getEndDate());
+        long id = db.insert(TABLE_NAME, null, contentValues);
+        term.setId((int) id); // Assuming you have a setId method
+        return term;
     }
 
-    public void updateNoteInDatabase(Note note) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+    public Course createCourse(String title, String startDate, String endDate, int termId, String status, String instructor, String note) {
+        Course course = new Course(title, startDate, endDate, termId, status, instructor, note); // Assuming you have a constructor like this
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-
-        contentValues.put(NOTE_CONTENT_FIELD, note.getContent());
-        contentValues.put(NOTE_COURSE_ID_FIELD, note.getCourseId());
-
-        sqLiteDatabase.update(NOTES_TABLE_NAME, contentValues, NOTE_ID_FIELD + " =? ", new String[]{String.valueOf(note.getId())});
+        contentValues.put(COURSE_TITLE_FIELD, course.getTitle());
+        contentValues.put(COURSE_START_DATE_FIELD, course.getStartDate());
+        contentValues.put(COURSE_END_DATE_FIELD, course.getEndDate());
+        contentValues.put(COURSE_TERM_ID_FIELD, course.getTermId());
+        contentValues.put(COURSE_STATUS_FIELD, course.getStatus());
+        contentValues.put(COURSE_INSTRUCTOR_FIELD, course.getInstructor());
+        contentValues.put(COURSE_NOTE_FIELD, course.getNote());
+        long id = db.insert(COURSES_TABLE_NAME, null, contentValues);
+        course.setId((int) id); // Assuming you have a setId method
+        return course;
     }
 
-    public void deleteNoteInDatabase(int id) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        sqLiteDatabase.delete(NOTES_TABLE_NAME, NOTE_ID_FIELD + " =? ", new String[]{String.valueOf(id)});
+    public Assessment createAssessment(String title, String dueDate, String assessmentType, int courseId) {
+        Assessment assessment = new Assessment(title, dueDate, assessmentType, courseId); // Assuming you have a constructor like this
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ASSESSMENT_TITLE_FIELD, assessment.getTitle());
+        contentValues.put(ASSESSMENT_DUE_DATE_FIELD, assessment.getDueDate());
+        contentValues.put(ASSESSMENT_TYPE_FIELD, assessment.getAssessmentType());
+        contentValues.put(ASSESSMENT_COURSE_ID_FIELD, assessment.getCourseId());
+        long id = db.insert(ASSESSMENTS_TABLE_NAME, null, contentValues);
+        assessment.setId((int) id); // Assuming you have a setId method
+        return assessment;
     }
+
+    public void populateWithTestData() {
+        createTerm("Test Term 1", "01-01-2023", "06-30-2023");
+        createCourse("Test Course 1", "01-01-2023", "03-31-2023", 1, "In Progress", "Test Instructor", "Test Note");
+        createAssessment("Test Assessment 1", "03-15-2023", "Objective", 1);
+    }
+
 
 }

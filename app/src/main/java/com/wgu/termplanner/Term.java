@@ -32,6 +32,13 @@ public class Term {
         deleted = null;
     }
 
+    public Term(String title, String startDate, String endDate) {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public static Term getTermForID(int passedTermID) {
         for (Term term : termArrayList)
         {

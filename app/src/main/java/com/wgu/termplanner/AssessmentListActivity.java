@@ -3,6 +3,7 @@ package com.wgu.termplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -49,13 +50,14 @@ public class AssessmentListActivity extends AppCompatActivity {
     }
 
     private void setAssessmentAdapter() {
-        ArrayList<Assessment> assessments = Assessment.getAssessmentsForCourseId(courseId);
+        SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(courseId);
 
         if (assessments != null && !assessments.isEmpty()) {
             assessmentAdapter = new AssessmentAdapter(getApplicationContext(), assessments);
             assessmentRecyclerView.setAdapter(assessmentAdapter);
         } else {
-            //TODO display toast message
+            Toast.makeText(this, "Assessment is null or empty", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -64,8 +66,11 @@ public class AssessmentListActivity extends AppCompatActivity {
         assessmentRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), (view, position) -> {
                     Assessment selectedAssessment = assessmentAdapter.getItem(position);
-                    Intent assessmentDetailIntent = new Intent(getApplicationContext(), AssessmentDetailActivity.class);
+
+                    //create an intent for AssessmentDetailActivity
+                    Intent assessmentDetailIntent = new Intent(AssessmentListActivity.this, AssessmentDetailActivity.class);
                     assessmentDetailIntent.putExtra(Assessment.ASSESSMENT_EDIT_EXTRA, selectedAssessment.getId());
+
                     startActivity(assessmentDetailIntent);
                 }));
     }

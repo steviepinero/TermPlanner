@@ -1,6 +1,5 @@
 package com.wgu.termplanner;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +28,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
     private RadioGroup statusRadioGroup;
     private Course selectedCourse;
+    private Note selectedNote;
     private RecyclerView assessmentRecyclerView;
     private AssessmentAdapter assessmentAdapter;
     private SQLiteManager sqLiteManager;
@@ -43,23 +44,27 @@ public class CourseDetailActivity extends AppCompatActivity {
         initWidgets();
         checkForEditCourse();
 
-        noteEditText = findViewById(R.id.noteEditText);
+        if (selectedCourse == null) {
+            Toast.makeText(this, "selected course is not found - null", Toast.LENGTH_SHORT).show();
+        } else {
+            noteEditText = findViewById(R.id.noteEditText);
 
-        assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
-        assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
+            assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(selectedCourse.getId());
 
-        assessmentAdapter = new AssessmentAdapter(this, assessments);
-        assessmentRecyclerView.setAdapter(assessmentAdapter);
-        //notification channel required
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("COURSE_CHANNEL_ID", "Course Notifications", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("Channel for Course Notifications");
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(selectedCourse.getId());
+
+            assessmentAdapter = new AssessmentAdapter(this, assessments);
+            assessmentRecyclerView.setAdapter(assessmentAdapter);
+            //notification channel required
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel("COURSE_CHANNEL_ID", "Course Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+                channel.setDescription("Channel for Course Notifications");
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
         }
-
 
     }
 
@@ -94,12 +99,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             startDateEditText.setText(selectedCourse.getStartDate());
             endDateEditText.setText(selectedCourse.getEndDate());
             instructorEditText.setText(selectedCourse.getInstructor());
-            noteEditText.setText(selectedCourse.getNotes());
+            noteEditText.setText(selectedCourse.getNote());
 
-            ArrayList<Note> courseNotes = Note.getNotesForCourseId(selectedCourse.getId());
-            if (!courseNotes.isEmpty()) {
-                Note note = courseNotes.get(0);
-                noteEditText.setText(note.getContent());
             }
 
 
@@ -112,7 +113,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                 }
             }
         }
-    }
+
 
     public void saveCourse(View view) {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
@@ -122,16 +123,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         String instructor = String.valueOf(instructorEditText.getText());
         String noteContent = String.valueOf(noteEditText.getText());
 
-        ArrayList<Note> courseNotes = Note.getNotesForCourseId(selectedCourse.getId());
-        if (!courseNotes.isEmpty()) {
-            // there's only one note per course.
-            Note note = courseNotes.get(0);
-            note.setContent(noteContent);
-            sqLiteManager.updateNoteInDatabase(note);
-        } else {
-            Note note = new Note(0, noteContent, selectedCourse.getId()); // Id auto-increments in the DB.
-            sqLiteManager.addNoteToDatabase(note);
-        }
+
 
         int selectedStatusId = statusRadioGroup.getCheckedRadioButtonId();
         RadioButton selectedRadioButton = findViewById(selectedStatusId);
@@ -141,7 +133,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         if (selectedCourse == null) {
             int id = Course.courseArrayList.size();
-            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, termId); // Pass termId when creating new course
+            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, noteContent, termId); // Pass termId when creating new course
             Course.courseArrayList.add(selectedCourse);
             sqLiteManager.addCourseToDatabase(selectedCourse);
         } else {
@@ -150,6 +142,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setEndDate(endDate);
             selectedCourse.setInstructor(instructor);
             selectedCourse.setStatus(status);
+            selectedNote.setContent(noteContent);
+            selectedNote.setCourseId(selectedCourse.getId());
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyy");
@@ -191,18 +185,22 @@ public class CourseDetailActivity extends AppCompatActivity {
 
 
     public void shareNote() {
-        ArrayList<Note> courseNotes = Note.getNotesForCourseId(selectedCourse.getId());
-        if (!courseNotes.isEmpty()) {
-            Note note = courseNotes.get(0);
-            String noteContent = note.getContent();
+       /* if (selectedCourse != null) {
+            ArrayList<Note> courseNotes = sqLiteManager.getNotesForCourseId(selectedCourse.getId());
+            if (!courseNotes.isEmpty()) {
+                Note note = courseNotes.get(0);
+                String noteContent = note.getContent();
 
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, noteContent);
-            shareIntent.setType("text/plain");
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, noteContent);
+                shareIntent.setType("text/plain");
 
-            startActivity(Intent.createChooser(shareIntent, "Share via"));
-        }
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            }
+        } else {
+            Toast.makeText(this, "No course selected", Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     public void scheduleAlarm(long time, String courseName) {
