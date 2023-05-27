@@ -28,7 +28,6 @@ public class CourseDetailActivity extends AppCompatActivity {
     private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
     private RadioGroup statusRadioGroup;
     private Course selectedCourse;
-    private Note selectedNote;
     private RecyclerView assessmentRecyclerView;
     private AssessmentAdapter assessmentAdapter;
     private SQLiteManager sqLiteManager;
@@ -142,8 +141,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setEndDate(endDate);
             selectedCourse.setInstructor(instructor);
             selectedCourse.setStatus(status);
-            selectedNote.setContent(noteContent);
-            selectedNote.setCourseId(selectedCourse.getId());
+
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyy");

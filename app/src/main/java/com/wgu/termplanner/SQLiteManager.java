@@ -316,23 +316,40 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
 
     public ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
-        ArrayList<Assessment> assessmentsForCourse = new ArrayList<>();
+        ArrayList<Assessment> assessments = new ArrayList<>();
+
         SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + ASSESSMENTS_TABLE_NAME + " WHERE courseId = ?";
 
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM assessments WHERE courseId = ?",
-                new String[] { String.valueOf(courseId) });
+        Cursor cursor = db.query(
+                ASSESSMENTS_TABLE_NAME, // table to query
+                new String[] {"id", "title", "dueDate", "type", "courseId"}, // columns to return
+                "courseId = ?", // columns for the WHERE clause
+                new String[] {String.valueOf(courseId)}, // values for the WHERE clause
+                null, // group rows
+                null, // filter row groups
+                null  // sort order
+        );
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
-                // Assuming Assessment has a constructor that takes a Cursor
-                assessmentsForCourse.add(new Assessment(cursor));
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String dueDate = cursor.getString(2);
+                String type = cursor.getString(3);
+                int course_Id = cursor.getInt(4);
+
+                assessments.add(new Assessment(id, title, dueDate, type, course_Id));
             } while (cursor.moveToNext());
         }
 
         cursor.close();
-        return assessmentsForCourse;
+
+        return assessments;
     }
+
+
+
 
     public void updateCourseInDatabase(Course selectedCourse) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -451,19 +468,19 @@ public class SQLiteManager extends SQLiteOpenHelper {
     }
 
     public Term createTerm(String title, String startDate, String endDate) {
-        Term term = new Term(title, startDate, endDate); // Assuming you have a constructor like this
+        Term term = new Term(title, startDate, endDate);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TITLE_FIELD, term.getTitle());
         contentValues.put(START_DATE_FIELD, term.getStartDate());
         contentValues.put(END_DATE_FIELD, term.getEndDate());
         long id = db.insert(TABLE_NAME, null, contentValues);
-        term.setId((int) id); // Assuming you have a setId method
+        term.setId((int) id);
         return term;
     }
 
     public Course createCourse(String title, String startDate, String endDate, int termId, String status, String instructor, String note) {
-        Course course = new Course(title, startDate, endDate, termId, status, instructor, note); // Assuming you have a constructor like this
+        Course course = new Course(title, startDate, endDate, termId, status, instructor, note);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COURSE_TITLE_FIELD, course.getTitle());
@@ -474,12 +491,12 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(COURSE_INSTRUCTOR_FIELD, course.getInstructor());
         contentValues.put(COURSE_NOTE_FIELD, course.getNote());
         long id = db.insert(COURSES_TABLE_NAME, null, contentValues);
-        course.setId((int) id); // Assuming you have a setId method
+        course.setId((int) id);
         return course;
     }
 
     public Assessment createAssessment(String title, String dueDate, String assessmentType, int courseId) {
-        Assessment assessment = new Assessment(title, dueDate, assessmentType, courseId); // Assuming you have a constructor like this
+        Assessment assessment = new Assessment(title, dueDate, assessmentType, courseId);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(ASSESSMENT_TITLE_FIELD, assessment.getTitle());
@@ -487,7 +504,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(ASSESSMENT_TYPE_FIELD, assessment.getAssessmentType());
         contentValues.put(ASSESSMENT_COURSE_ID_FIELD, assessment.getCourseId());
         long id = db.insert(ASSESSMENTS_TABLE_NAME, null, contentValues);
-        assessment.setId((int) id); // Assuming you have a setId method
+        assessment.setId((int) id);
         return assessment;
     }
 

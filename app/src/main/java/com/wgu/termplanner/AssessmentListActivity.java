@@ -26,7 +26,7 @@ public class AssessmentListActivity extends AppCompatActivity {
 
         initWidgets();
         setAssessmentAdapter();
-        setOnClickListener();
+        /*setOnClickListener();*/
     }
 
     @Override
@@ -50,14 +50,18 @@ public class AssessmentListActivity extends AppCompatActivity {
     }
 
     private void setAssessmentAdapter() {
+
+        System.out.println(courseId + "Course ID value in SetAssessmentAdapter");
+
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(courseId);
 
-        if (assessments != null && !assessments.isEmpty()) {
+        if (assessments == null ) {
+            Toast.makeText(this, "Assessment is null or empty", Toast.LENGTH_SHORT).show();
+
+        } else {
             assessmentAdapter = new AssessmentAdapter(getApplicationContext(), assessments);
             assessmentRecyclerView.setAdapter(assessmentAdapter);
-        } else {
-            Toast.makeText(this, "Assessment is null or empty", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -73,6 +77,17 @@ public class AssessmentListActivity extends AppCompatActivity {
 
                     startActivity(assessmentDetailIntent);
                 }));
+    }
+
+    public void onAssessmentDetailButtonClick(View view) {
+        int assessmentId = getIntent().getIntExtra(Assessment.ASSESSMENT_EDIT_EXTRA, -1);
+        if (assessmentId == -1) {
+            Toast.makeText(this,"Assessment list is empty", Toast.LENGTH_SHORT).show();
+        }
+
+        Intent intent = new Intent(AssessmentListActivity.this, AssessmentDetailActivity.class);
+        intent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
+        startActivity(intent);
     }
 
     public void addAssessment(View view) {

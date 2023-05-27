@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private void initWidgets() {
         SQLiteManager dbManager = SQLiteManager.instanceOfDatabase(this);
         //TODO REMOVE TEST DATA INIT BEFORE SUBMISSION
-        dbManager.populateWithTestData();
+        /*dbManager.populateWithTestData();*/
 
         termListView = findViewById(R.id.termListView);
     }

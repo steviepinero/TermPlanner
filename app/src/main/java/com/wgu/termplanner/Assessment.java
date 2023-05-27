@@ -49,6 +49,14 @@ public class Assessment {
         this.courseId = courseId;
     }
 
+    public Assessment(int courseId) {
+        this.id = id;
+        this.title = title;
+        this.dueDate = dueDate;
+        this.assessmentType = assessmentType;
+        this.courseId = courseId;
+    }
+
 
     public static ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
         ArrayList<Assessment> assessmentsForCourse = new ArrayList<>();

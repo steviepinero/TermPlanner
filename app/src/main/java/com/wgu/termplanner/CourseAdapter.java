@@ -51,7 +51,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, AssessmentListActivity.class);
-                intent.putExtra("COURSE_ID", course.getId());  // Pass the course ID to the AssessmentListActivity
+                intent.putExtra(Course.COURSE_EDIT_EXTRA, course.getId());  // Pass the course ID to the AssessmentListActivity
                 context.startActivity(intent);
             }
         });
@@ -59,7 +59,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CourseDetailActivity.class);
-                intent.putExtra("COURSE_ID", course.getId());  // Pass the course ID to the Activity
+                intent.putExtra(Course.COURSE_EDIT_EXTRA, course.getId());  // Pass the course ID to the Activity
                 context.startActivity(intent);
             }
         });

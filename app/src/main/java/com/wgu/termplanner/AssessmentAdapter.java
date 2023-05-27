@@ -42,7 +42,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
             @Override
             public void onClick(View view) {
                 // Start the AssessmentListActivity
-                Intent intent = new Intent(view.getContext(), AssessmentListActivity.class);
+                Intent intent = new Intent(context, AssessmentListActivity.class);
                 // pass extra data if needed
                  intent.putExtra("ASSESSMENT_ID", assessment.getId());
                 context.startActivity(intent);
