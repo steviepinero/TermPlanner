@@ -18,7 +18,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 11;
 
     private static final String TABLE_NAME = "Term";
     //Term table columns
@@ -509,9 +509,9 @@ public class SQLiteManager extends SQLiteOpenHelper {
     }
 
     public void populateWithTestData() {
-        createTerm("Test Term 1", "01-01-2023", "06-30-2023");
-        createCourse("Test Course 1", "01-01-2023", "03-31-2023", 1, "In Progress", "Test Instructor", "Test Note");
-        createAssessment("Test Assessment 1", "03-15-2023", "Objective", 1);
+        createTerm("Test Term 1", "01/01/2023", "06/30/2023");
+        createCourse("Test Course 1", "01/01/2023", "03/31/2023", 1, "In Progress", "Test Instructor", "Test Note");
+        createAssessment("Test Assessment 1", "03/15/2023", "Objective", 1);
     }
 
 
