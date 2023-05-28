@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -72,8 +73,13 @@ public class TermDetailActivity extends AppCompatActivity {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
 
         if (selectedTerm != null) {
-            sqLiteManager.deleteTermInDatabase(selectedTerm.getId());
+            int courseCount = sqLiteManager.getCourseCountForTerm(selectedTerm.getId());
+            if (courseCount > 0) {
+                Toast.makeText(this, "Cannot delete term. There are courses associated with this term.", Toast.LENGTH_SHORT).show();
+            } else {
+                sqLiteManager.deleteTermInDatabase(selectedTerm.getId());
+            }
+            finish();
         }
-        finish();
     }
 }

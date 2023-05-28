@@ -55,7 +55,8 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:hint="My Term"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,7 +76,8 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:hint="MM/dd/yyyy"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -95,7 +97,8 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:hint="MM/dd/yyyy"/>
 
     <Button
         android:id="@+id/deleteTermButton"

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="165dp"
+    android:layout_height="wrap_content"
     android:padding="15dp">
 
     <TableLayout
@@ -22,6 +22,16 @@
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
+            <TextView
+                android:id="@+id/cellStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:text="Status"
+                android:paddingLeft="25dp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
         </TableRow>
 
         <TableRow
@@ -39,39 +49,54 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/cellInstructor"
+                android:id="@+id/cellEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:maxLines="1"
-                android:text="Instructor"
                 android:paddingLeft="25dp"
+                android:maxLines="1"
+                android:text="End Date"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
+
+
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <TextView
-                android:id="@+id/cellEndDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:maxLines="1"
-                android:text="End Date"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+
 
             <TextView
-                android:id="@+id/cellStatus"
+                android:id="@+id/cellInstructor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
-                android:text="Status"
+                android:text="Instructor"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/cellInstructorPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:text="Instructor Phone"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/cellInstructorEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
                 android:paddingLeft="25dp"
+                android:text="Instructor Email"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </TableRow>

@@ -45,7 +45,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.startDate.setText(course.getStartDate());
         holder.endDate.setText(course.getEndDate());
         holder.instructor.setText(course.getInstructor());
+        holder.phone.setText(course.getInstructorPhone());
+        holder.email.setText((course.getInstructorEmail()));
         holder.status.setText(course.getStatus());
+
 
         holder.viewAssessmentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +77,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     public class CourseViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, startDate, endDate, instructor, status;
+        TextView title, startDate, endDate, instructor, phone, email, status;
         Button viewAssessmentsButton, editCourseButton;
 
         public CourseViewHolder(@NonNull View itemView) {
@@ -84,6 +87,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             startDate = itemView.findViewById(R.id.cellStartDate);
             endDate = itemView.findViewById(R.id.cellEndDate);
             instructor = itemView.findViewById(R.id.cellInstructor);
+            phone = itemView.findViewById(R.id.cellInstructorPhone);
+            email = itemView.findViewById(R.id.cellInstructorEmail);
             status = itemView.findViewById(R.id.cellStatus);
             viewAssessmentsButton = itemView.findViewById(R.id.viewAssessmentsButton);
             editCourseButton = itemView.findViewById(R.id.editCourseButton);

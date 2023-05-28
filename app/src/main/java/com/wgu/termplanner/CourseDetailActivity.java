@@ -26,7 +26,7 @@ import java.util.Date;
 
 public class CourseDetailActivity extends AppCompatActivity {
 
-    private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText;
+    private EditText titleEditText, startDateEditText, endDateEditText, instructorEditText, instructorPhoneEditText, instructorEmailEditText;
     private RadioGroup statusRadioGroup;
     private Course selectedCourse;
     private RecyclerView assessmentRecyclerView;
@@ -62,6 +62,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         startDateEditText = findViewById(R.id.startDateEditText);
         endDateEditText = findViewById(R.id.endDateEditText);
         instructorEditText = findViewById(R.id.instructorEditText);
+        instructorPhoneEditText = findViewById(R.id.instructorPhoneEditText);
+        instructorEmailEditText = findViewById(R.id.instructorEmailEditText);
         statusRadioGroup = findViewById(R.id.statusRadioGroup);
         noteEditText = findViewById(R.id.noteEditText);
         shareNoteButton = findViewById(R.id.shareNoteButton);
@@ -92,6 +94,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             endDateEditText.setText(selectedCourse.getEndDate());
             instructorEditText.setText(selectedCourse.getInstructor());
             noteEditText.setText(selectedCourse.getNote());
+            instructorPhoneEditText.setText(selectedCourse.getInstructorPhone());
+            instructorEmailEditText.setText(selectedCourse.getInstructorEmail());
 
             String status = selectedCourse.getStatus();
             for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
@@ -115,6 +119,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         String startDate = String.valueOf(startDateEditText.getText());
         String endDate = String.valueOf(endDateEditText.getText());
         String instructor = String.valueOf(instructorEditText.getText());
+        String instructorPhone = String.valueOf(instructorPhoneEditText.getText());
+        String instructorEmail = String.valueOf(instructorEmailEditText.getText());
         String noteContent = String.valueOf(noteEditText.getText());
         if (noteContent == null) {
             noteContent = " ";
@@ -125,13 +131,12 @@ public class CourseDetailActivity extends AppCompatActivity {
         RadioButton selectedRadioButton = findViewById(selectedStatusId);
         String status = selectedRadioButton.getText().toString();
 
-        /*int termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1); // Retrieve termId from intent*/
 
         int termId = 0;
         if (selectedCourse == null) {
             int id = Course.courseArrayList.size();
             termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
-            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, noteContent, termId); // Pass termId when creating new course
+            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, instructorPhone, instructorEmail, noteContent, termId); // Pass termId when creating new course
 
             sqLiteManager.addCourseToDatabase(selectedCourse);
         } else {
@@ -139,6 +144,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setStartDate(startDate);
             selectedCourse.setEndDate(endDate);
             selectedCourse.setInstructor(instructor);
+            selectedCourse.setInstructorPhone(instructorPhone);
+            selectedCourse.setInstructorEmail(instructorEmail);
             selectedCourse.setStatus(status);
             selectedCourse.setNote(noteContent);
             selectedCourse.setTermId(termId);

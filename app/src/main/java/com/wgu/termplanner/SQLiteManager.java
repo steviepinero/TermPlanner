@@ -18,7 +18,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
 
     private static final String TABLE_NAME = "Term";
     //Term table columns
@@ -39,6 +39,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
     private static final String COURSE_TERM_ID_FIELD = "termId";
     private static final String COURSE_STATUS_FIELD = "status";
     private static final String COURSE_INSTRUCTOR_FIELD = "instructor";
+    private static final String COURSE_INSTRUCTOR_PHONE_FIELD = "phone";
+    private static final String COURSE_INSTRUCTOR_EMAIL_FIELD = "email";
     private static final String COURSE_NOTE_FIELD = "note";
 
     //Assessment table columns
@@ -100,6 +102,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 .append(COURSE_END_DATE_FIELD)
                 .append(" TEXT, ")
                 .append(COURSE_INSTRUCTOR_FIELD)
+                .append(" TEXT, ")
+                .append(COURSE_INSTRUCTOR_PHONE_FIELD)
+                .append(" TEXT, ")
+                .append(COURSE_INSTRUCTOR_EMAIL_FIELD)
                 .append(" TEXT, ")
                 .append(COURSE_STATUS_FIELD)
                 .append(" TEXT, ")
@@ -218,6 +224,15 @@ public class SQLiteManager extends SQLiteOpenHelper {
         sqLiteDatabase.update(TABLE_NAME, contentValues, ID_FIELD + " =? ", new String[]{String.valueOf(term.getId())});
     }
 
+    public int getCourseCountForTerm(int termId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String countQuery = "SELECT * FROM " + SQLiteManager.COURSES_TABLE_NAME + " WHERE " + SQLiteManager.COURSE_TERM_ID_FIELD+ " = " + termId;
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
     public void deleteTermInDatabase(int id) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.delete(TABLE_NAME, ID_FIELD + " =? ", new String[]{String.valueOf(id)});
@@ -252,6 +267,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
         values.put(COURSE_START_DATE_FIELD, course.getStartDate());
         values.put(COURSE_END_DATE_FIELD, course.getEndDate());
         values.put(COURSE_INSTRUCTOR_FIELD, course.getInstructor());
+        values.put(COURSE_INSTRUCTOR_PHONE_FIELD, course.getInstructorPhone());
+        values.put(COURSE_INSTRUCTOR_EMAIL_FIELD, course.getInstructorEmail());
         values.put(COURSE_STATUS_FIELD, course.getStatus());
         values.put(COURSE_NOTE_FIELD, course.getNote());
         values.put(COURSE_TERM_ID_FIELD, course.getTermId());
@@ -280,14 +297,16 @@ public class SQLiteManager extends SQLiteOpenHelper {
                     String startDate = result.getString(2);
                     String endDate = result.getString(3);
                     String instructor = result.getString(4);
-                    String status = result.getString(5);
-                    String note = result.getString(6);
-                    int termId = result.getInt(7);
+                    String instructorPhone = result.getString(5);
+                    String instructorEmail = result.getString(6);
+                    String status = result.getString(7);
+                    String note = result.getString(8);
+                    int termId = result.getInt(9);
 
                     Date startDateRefactor = getDateFromString(startDate);
                     Date endDateRefactor = getDateFromString(endDate);
 
-                    Course course = new Course(id, title, startDate, endDate, instructor, status, note, termId);
+                    Course course = new Course(id, title, startDate, endDate, instructor, instructorPhone, instructorEmail, status, note, termId);
                     Course.courseArrayList.add(course);
                 }
             }
@@ -308,9 +327,11 @@ public class SQLiteManager extends SQLiteOpenHelper {
             course.setStartDate(cursor.getString(2));
             course.setEndDate(cursor.getString(3));
             course.setInstructor(cursor.getString(4));
-            course.setStatus(cursor.getString(5));
-            course.setNote(cursor.getString(6));
-            course.setTermId(cursor.getInt(7));
+            course.setInstructorPhone(cursor.getString(5));
+            course.setInstructorEmail(cursor.getString(6));
+            course.setStatus(cursor.getString(7));
+            course.setNote(cursor.getString(8));
+            course.setTermId(cursor.getInt(9));
 
             cursor.close();
             return course;
@@ -370,6 +391,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(COURSE_START_DATE_FIELD, selectedCourse.getStartDate());
         contentValues.put(COURSE_END_DATE_FIELD, selectedCourse.getEndDate());
         contentValues.put(COURSE_INSTRUCTOR_FIELD, selectedCourse.getInstructor());
+        contentValues.put(COURSE_INSTRUCTOR_PHONE_FIELD, selectedCourse.getInstructorPhone());
+        contentValues.put(COURSE_INSTRUCTOR_EMAIL_FIELD, selectedCourse.getInstructorEmail());
         contentValues.put(COURSE_STATUS_FIELD, selectedCourse.getStatus());
         contentValues.put(COURSE_NOTE_FIELD, selectedCourse.getNote());
         contentValues.put(COURSE_TERM_ID_FIELD, selectedCourse.getTermId());
@@ -388,7 +411,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(
                 "courses", // table to query
-                new String[] {"id", "title", "startDate", "endDate", "instructor", "status","termId"}, // columns to return
+                new String[] {"id", "title", "startDate", "endDate", "instructor", "phone", "email", "status","termId"}, // columns to return
                 "termId = ?", // columns for the WHERE clause
                 new String[] {String.valueOf(termId)}, // values for the WHERE clause
                 null, // group rows
@@ -404,10 +427,13 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 String startDate = cursor.getString(2);
                 String endDate = cursor.getString(3);
                 String instructorName = cursor.getString(4);
-                String status = cursor.getString(5);
-                int term_Id = cursor.getInt(6);
+                String phone = cursor.getString(5);
+                String email = cursor.getString(6);
+                String status = cursor.getString(7);
+                String note = cursor.getString(8);
+                int term_Id = cursor.getInt(9);
 
-                courses.add(new Course(id, title, startDate, endDate, instructorName, status, term_Id));
+                courses.add(new Course(id, title, startDate, endDate, instructorName, phone, email, status, note, term_Id));
             } while (cursor.moveToNext());
         }
 
@@ -488,8 +514,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return term;
     }
 
-    public Course createCourse(String title, String startDate, String endDate, int termId, String status, String instructor, String note) {
-        Course course = new Course(title, startDate, endDate, termId, status, instructor, note);
+    public Course createCourse(String title, String startDate, String endDate, int termId, String status, String instructor, String instructorPhone, String instructorEmail, String note) {
+        Course course = new Course(title, startDate, endDate, termId, status, instructor, instructorPhone, instructorEmail, note);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COURSE_TITLE_FIELD, course.getTitle());
@@ -498,6 +524,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
         contentValues.put(COURSE_TERM_ID_FIELD, course.getTermId());
         contentValues.put(COURSE_STATUS_FIELD, course.getStatus());
         contentValues.put(COURSE_INSTRUCTOR_FIELD, course.getInstructor());
+        contentValues.put(COURSE_INSTRUCTOR_PHONE_FIELD, course.getInstructorPhone());
+        contentValues.put(COURSE_INSTRUCTOR_EMAIL_FIELD, course.getInstructorEmail());
         contentValues.put(COURSE_NOTE_FIELD, course.getNote());
         long id = db.insert(COURSES_TABLE_NAME, null, contentValues);
         course.setId((int) id);
@@ -519,7 +547,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     public void populateWithTestData() {
         createTerm("Test Term 1", "01/01/2023", "06/30/2023");
-        createCourse("Test Course 1", "01/01/2023", "03/31/2023", 1, "In Progress", "Test Instructor", "Test Note");
+        createCourse("Test Course 1", "01/01/2023", "03/31/2023", 1, "In Progress", "Test Instructor", "888-555-0123", "teacher@mySchool.edu", "My test note");
         createAssessment("Test Assessment 1", "03/15/2023", "Objective Assessment", 1);
     }
 

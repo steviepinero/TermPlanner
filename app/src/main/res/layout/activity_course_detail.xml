@@ -60,7 +60,8 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:hint="My course name"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -80,7 +81,8 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:hint="MM/dd/yyyy"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -100,12 +102,13 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:hint="MM/dd/yyyy"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Instructor Name"
+        android:text="Instructor Details: "
         android:textSize="25sp"
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
@@ -120,7 +123,29 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:hint="Name"/>
+
+        <EditText
+            android:id="@+id/instructorPhoneEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:hint="Phone Number"/>
+        <EditText
+            android:id="@+id/instructorEmailEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:hint="Email Address"/>
 
     <RadioGroup
         android:id="@+id/statusRadioGroup"
@@ -137,7 +162,8 @@
             android:id="@+id/inProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="In Progress" />
+            android:text="In Progress"
+            android:checked="true"/>
 
         <RadioButton
             android:id="@+id/completed"

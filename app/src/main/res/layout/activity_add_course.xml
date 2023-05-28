@@ -53,130 +53,171 @@
         android:textStyle="bold"
         android:layout_gravity="center" />
 
-    <EditText
-        android:id="@+id/titleEditText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_gravity="center" />
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:hint="My course name"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Date"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_gravity="center" />
-
-    <EditText
-        android:id="@+id/startDateEditText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_gravity="center" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End Date"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_gravity="center" />
-
-    <EditText
-        android:id="@+id/endDateEditText"
-        android:layout_width="248dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Instructor Name"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_gravity="center" />
-
-    <EditText
-        android:id="@+id/instructorEditText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:id="@+id/statusRadioGroup"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Status"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        android:textStyle="bold">
-
-        <RadioButton
-            android:id="@+id/inProgress"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="In Progress" />
+            android:text="Start Date"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
 
-        <RadioButton
-            android:id="@+id/completed"
+        <EditText
+            android:id="@+id/startDateEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:hint="MM/dd/yyyy"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Completed" />
+            android:text="End Date"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
 
-        <RadioButton
-            android:id="@+id/dropped"
+        <EditText
+            android:id="@+id/endDateEditText"
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:hint="MM/dd/yyyy"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dropped" />
+            android:text="Instructor Details: "
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
 
-        <RadioButton
-            android:id="@+id/planToTake"
+        <EditText
+            android:id="@+id/instructorEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:hint="Name"/>
+
+        <EditText
+            android:id="@+id/instructorPhoneEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:hint="Phone Number"/>
+        <EditText
+            android:id="@+id/instructorEmailEditText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:hint="Email Address"/>
+
+        <RadioGroup
+            android:id="@+id/statusRadioGroup"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Status"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textStyle="bold">
+
+            <RadioButton
+                android:id="@+id/inProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In Progress"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/completed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed" />
+
+            <RadioButton
+                android:id="@+id/dropped"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dropped" />
+
+            <RadioButton
+                android:id="@+id/planToTake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plan to Take" />
+        </RadioGroup>
+
+
+        <EditText
+            android:id="@+id/noteEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter note..."
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/shareNoteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Plan to Take" />
-    </RadioGroup>
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/purple_500"
+            android:text="Share Note"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:icon="@android:drawable/ic_menu_share" />
 
-
-    <EditText
-        android:id="@+id/notesEditText"
-        android:layout_width="match_parent"
-        android:layout_height="163dp"
-        android:hint="Notes" />
-
-    <Button
-        android:id="@+id/deleteCourseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/purple_500"
-        android:onClick="deleteCourse"
-        android:text="Delete"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        <Button
+            android:id="@+id/deleteCourseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/purple_500"
+            android:onClick="deleteCourse"
+            android:text="Delete"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:icon="@android:drawable/ic_dialog_alert" />
     </LinearLayout>
 </ScrollView>
