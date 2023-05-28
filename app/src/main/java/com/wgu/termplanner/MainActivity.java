@@ -61,9 +61,16 @@ public class MainActivity extends AppCompatActivity {
         setTermAdapter();
     }
 
-  /*  public void addCourse(View view) {
-        Intent addCourseIntent = new Intent(this, AddCourseActivity.class);
-      *//*  addCourseIntent.putExtra(Term.TERM_EDIT_EXTRA, termId);*//*
-        startActivity(addCourseIntent);
+    /*public void onTermDetailButtonClick(View view) {
+        String debug = "OnTermDetailButtonClick in MainActivity";
+        System.out.println(debug);
+
+        // Get the Term object associated with the button's parent view
+        Term term = (Term) view.getTag();
+
+        // Launch the Course List activity, passing in the termId as an extra
+        Intent intent = new Intent(getApplicationContext(), TermDetailActivity.class);
+        intent.putExtra(Term.TERM_EDIT_EXTRA, term.getId());
+        startActivity(intent);
     }*/
 }

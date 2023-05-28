@@ -37,17 +37,26 @@ public class TermAdapter extends ArrayAdapter<Term> {
         TextView startDate = convertView.findViewById(R.id.cellStartDate);
         TextView endDate = convertView.findViewById(R.id.cellEndDate);
         Button courseDetailButton = convertView.findViewById(R.id.viewCoursesButton);
+        Button termDetailButton = convertView.findViewById(R.id.editTermButton);
 
         title.setText(term.getTitle());
         startDate.setText(term.getStartDate());
         endDate.setText((term.getEndDate()));
 
         courseDetailButton.setTag(term); // Set the Term object as a tag on the button
+        termDetailButton.setTag(term);
 
         courseDetailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onCourseDetailButtonClick(view);
+            }
+        });
+
+        termDetailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onTermDetailButtonClick(view);
             }
         });
 
@@ -65,6 +74,19 @@ public class TermAdapter extends ArrayAdapter<Term> {
 
         // Launch the Course List activity, passing in the termId as an extra
         Intent intent = new Intent(getContext(), CourseListActivity.class);
+        intent.putExtra(Term.TERM_EDIT_EXTRA, term.getId());
+        getContext().startActivity(intent);
+    }
+
+    public void onTermDetailButtonClick(View view) {
+        String debug = "OnTermDetailButtonClick in TermAdapter";
+        System.out.println(debug);
+
+        // Get the Term object associated with the button's parent view
+        Term term = (Term) view.getTag();
+
+        // Launch the Course List activity, passing in the termId as an extra
+        Intent intent = new Intent(getContext(), TermDetailActivity.class);
         intent.putExtra(Term.TERM_EDIT_EXTRA, term.getId());
         getContext().startActivity(intent);
     }
