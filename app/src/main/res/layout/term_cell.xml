@@ -59,6 +59,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_marginLeft="5dp"
+                android:onClick="onTermDetailButtonClick"
                 android:text="Edit" />
 
         </TableRow>

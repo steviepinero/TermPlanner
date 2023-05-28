@@ -41,10 +41,10 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         holder.editAssessmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Start the AssessmentListActivity
-                Intent intent = new Intent(context, AssessmentListActivity.class);
+                // Start the AssessmentDetailActivity
+                Intent intent = new Intent(context, AssessmentDetailActivity.class);
                 // pass extra data if needed
-                 intent.putExtra("ASSESSMENT_ID", assessment.getId());
+                 intent.putExtra(Assessment.ASSESSMENT_EDIT_EXTRA, assessment.getId());
                 context.startActivity(intent);
             }
         });

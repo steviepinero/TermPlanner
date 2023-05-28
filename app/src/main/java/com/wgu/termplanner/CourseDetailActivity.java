@@ -43,7 +43,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         initWidgets();
         checkForEditCourse();
 
-        if (selectedCourse == null) {
+    /*    if (selectedCourse == null) {
             Toast.makeText(this, "selected course is not found - null", Toast.LENGTH_SHORT).show();
         } else {
             noteEditText = findViewById(R.id.noteEditText);
@@ -55,7 +55,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(selectedCourse.getId());
 
             assessmentAdapter = new AssessmentAdapter(this, assessments);
-            assessmentRecyclerView.setAdapter(assessmentAdapter);
+            assessmentRecyclerView.setAdapter(assessmentAdapter);*/
+
             //notification channel required
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel("COURSE_CHANNEL_ID", "Course Notifications", NotificationManager.IMPORTANCE_DEFAULT);
@@ -65,7 +66,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             }
         }
 
-    }
+
 
 
     private void initWidgets() {
@@ -121,6 +122,9 @@ public class CourseDetailActivity extends AppCompatActivity {
         String endDate = String.valueOf(endDateEditText.getText());
         String instructor = String.valueOf(instructorEditText.getText());
         String noteContent = String.valueOf(noteEditText.getText());
+        if (noteContent == null) {
+            noteContent = " ";
+        }
 
 
 
@@ -141,6 +145,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setEndDate(endDate);
             selectedCourse.setInstructor(instructor);
             selectedCourse.setStatus(status);
+            selectedCourse.setNote(noteContent);
 
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }

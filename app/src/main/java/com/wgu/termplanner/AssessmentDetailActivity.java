@@ -32,8 +32,12 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     }
 
     public void initWidgets() {
+        titleEditText = findViewById(R.id.titleEditText);
         dueDateEditText = findViewById(R.id.dueDateEditText);
-        titleEditText = findViewById(R.id.dueDateEditText);
+        assessmentRadioGroup = findViewById(R.id.assessmentRadioGroup);
+        sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+
+        // Initialize the SQLiteManager
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);
     }
 
@@ -48,6 +52,9 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         // Determine selectedAssessment type
         RadioGroup assessmentRadioGroup = findViewById(R.id.assessmentRadioGroup);
         String type = ((RadioButton) findViewById(assessmentRadioGroup.getCheckedRadioButtonId())).getText().toString();
+        if (type == null){ // autofill type value if it's empty
+            type = "Objective Assessment";
+        }
 
         if (selectedAssessment == null) { // if we're creating a new selectedAssessment
             int id = Assessment.assessmentArrayList.size();
@@ -86,13 +93,16 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         if (selectedAssessment != null) {
             titleEditText.setText(selectedAssessment.getTitle());
             dueDateEditText.setText(selectedAssessment.getDueDate());
-            String assessmentType = selectedAssessment.getAssessmentType();
 
-            if (assessmentType.equals("Performance Assessment")) {
-                assessmentRadioGroup.check(R.id.performanceAssessment);
-            } else {
-                assessmentRadioGroup.check(R.id.objectiveAssessment);
-            }
+        }
+        String assessmentType = selectedAssessment.getAssessmentType();
+        for (int i = 0; i < assessmentRadioGroup.getChildCount(); i++){
+
+            RadioButton radioButton = (RadioButton) assessmentRadioGroup.getChildAt(i);
+            if (radioButton.getText().toString().equals(assessmentType)) {
+                radioButton.setChecked(true);
+                break;
+        }
 
 
         }

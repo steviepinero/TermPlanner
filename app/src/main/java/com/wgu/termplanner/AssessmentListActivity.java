@@ -26,7 +26,7 @@ public class AssessmentListActivity extends AppCompatActivity {
 
         initWidgets();
         setAssessmentAdapter();
-        /*setOnClickListener();*/
+        setOnClickListener();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AssessmentListActivity extends AppCompatActivity {
 
     private void setAssessmentAdapter() {
 
-        System.out.println(courseId + "Course ID value in SetAssessmentAdapter");
+        System.out.println(courseId + " Course ID value in SetAssessmentAdapter");
 
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(courseId);

@@ -49,35 +49,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);
 
 //TODO FIX THE DATE PICKER & IMPLEMENT IT FOR EACH EDIT VIEW
-       /* if (dueDateEditText != null) {
-            dueDateEditText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("AddAssessmentActivity", "dueDateEditText onClick called");
-                    Log.println(Log.INFO, "AddAssessmentActivity","dueDateEditText onClick called");
 
-
-                    final Calendar calendar = Calendar.getInstance();
-                    day = calendar.get(Calendar.DAY_OF_MONTH);
-                    month = calendar.get(Calendar.MONTH);
-                    year = calendar.get(Calendar.YEAR);
-
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(AddAssessmentActivity.this,
-                            new DatePickerDialog.OnDateSetListener() {
-                                @Override
-                                public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                                    month = month + 1; //Month in DatePickerDialog starts with 0 for January
-                                    String date = dayOfMonth + "/" + month + "/" + year;
-                                    dueDateEditText.setText(date);
-                                }
-                            }, year, month, day);
-                    datePickerDialog.show();
-                }
-            });
-        } else {
-            Toast.makeText(AddAssessmentActivity.this, "Error initializing date field", Toast.LENGTH_SHORT).show();
-
-        }*/
     }
 
     public void saveAssessment(View view) {

@@ -511,7 +511,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     public void populateWithTestData() {
         createTerm("Test Term 1", "01/01/2023", "06/30/2023");
         createCourse("Test Course 1", "01/01/2023", "03/31/2023", 1, "In Progress", "Test Instructor", "Test Note");
-        createAssessment("Test Assessment 1", "03/15/2023", "Objective", 1);
+        createAssessment("Test Assessment 1", "03/15/2023", "Objective Assessment", 1);
     }
 
 
