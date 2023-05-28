@@ -14,6 +14,7 @@ public class TermDetailActivity extends AppCompatActivity {
 
     private EditText titleEditText, startDateEditText, endDateEditText;
     private Button deleteButton;
+    private SQLiteManager sqLiteManager;
 
     private Term selectedTerm;
 
@@ -68,9 +69,11 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     public void deleteTerm(View view) {
-        selectedTerm.setDeleted(new Date());
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
-        sqLiteManager.updateTermInDatabase(selectedTerm);
+
+        if (selectedTerm != null) {
+            sqLiteManager.deleteTermInDatabase(selectedTerm.getId());
+        }
         finish();
     }
 }

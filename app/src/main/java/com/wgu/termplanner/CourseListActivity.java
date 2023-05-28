@@ -73,6 +73,7 @@ public class CourseListActivity extends AppCompatActivity {
     // Create an intent for CourseDetailActivity
     Intent intent = new Intent(CourseListActivity.this, CourseDetailActivity.class);
     intent.putExtra(Term.TERM_EDIT_EXTRA, termId);
+    intent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
 
     // Start CourseDetailActivity
     startActivity(intent);

@@ -18,7 +18,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     private static final String TABLE_NAME = "Term";
     //Term table columns
@@ -218,6 +218,11 @@ public class SQLiteManager extends SQLiteOpenHelper {
         sqLiteDatabase.update(TABLE_NAME, contentValues, ID_FIELD + " =? ", new String[]{String.valueOf(term.getId())});
     }
 
+    public void deleteTermInDatabase(int id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE_NAME, ID_FIELD + " =? ", new String[]{String.valueOf(id)});
+    }
+
     private String getStringFromDate(Date date) {
         if(date == null)
             return null;
@@ -314,6 +319,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
     }
 
+    public void deleteCourseInDatabase(int id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(COURSES_TABLE_NAME, COURSE_ID_FIELD + " =? ", new String[]{String.valueOf(id)});
+    }
 
     public ArrayList<Assessment> getAssessmentsForCourseId(int courseId) {
         ArrayList<Assessment> assessments = new ArrayList<>();

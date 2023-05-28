@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,19 +44,6 @@ public class CourseDetailActivity extends AppCompatActivity {
         initWidgets();
         checkForEditCourse();
 
-    /*    if (selectedCourse == null) {
-            Toast.makeText(this, "selected course is not found - null", Toast.LENGTH_SHORT).show();
-        } else {
-            noteEditText = findViewById(R.id.noteEditText);
-
-            assessmentRecyclerView = findViewById(R.id.assessmentRecyclerView);
-            assessmentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-            ArrayList<Assessment> assessments = sqLiteManager.getAssessmentsForCourseId(selectedCourse.getId());
-
-            assessmentAdapter = new AssessmentAdapter(this, assessments);
-            assessmentRecyclerView.setAdapter(assessmentAdapter);*/
 
             //notification channel required
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -92,17 +80,18 @@ public class CourseDetailActivity extends AppCompatActivity {
     private void checkForEditCourse() {
         Intent previousIntent = getIntent();
         int passedCourseID = previousIntent.getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
+
+        Log.d("CourseDetailActivity", "Passed course ID: " + passedCourseID);
+
         selectedCourse = sqLiteManager.getCourseById(passedCourseID);
 
         if (selectedCourse != null) {
+            Log.d("CourseDetailActivity", "Course found in database: " + selectedCourse.getTitle());
             titleEditText.setText(selectedCourse.getTitle());
             startDateEditText.setText(selectedCourse.getStartDate());
             endDateEditText.setText(selectedCourse.getEndDate());
             instructorEditText.setText(selectedCourse.getInstructor());
             noteEditText.setText(selectedCourse.getNote());
-
-            }
-
 
             String status = selectedCourse.getStatus();
             for (int i = 0; i < statusRadioGroup.getChildCount(); i++) {
@@ -112,7 +101,12 @@ public class CourseDetailActivity extends AppCompatActivity {
                     break;
                 }
             }
+        } else {
+            Log.d("CourseDetailActivity", "Course not found in database");
+            // Handle the situation when course is not found.
+            Toast.makeText(this,"Course not found in database", Toast.LENGTH_SHORT);
         }
+    }
 
 
     public void saveCourse(View view) {
@@ -127,17 +121,18 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
 
 
-
         int selectedStatusId = statusRadioGroup.getCheckedRadioButtonId();
         RadioButton selectedRadioButton = findViewById(selectedStatusId);
         String status = selectedRadioButton.getText().toString();
 
-        int termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1); // Retrieve termId from intent
+        /*int termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1); // Retrieve termId from intent*/
 
+        int termId = 0;
         if (selectedCourse == null) {
             int id = Course.courseArrayList.size();
+            termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
             selectedCourse = new Course(id, title, startDate, endDate, status, instructor, noteContent, termId); // Pass termId when creating new course
-            Course.courseArrayList.add(selectedCourse);
+
             sqLiteManager.addCourseToDatabase(selectedCourse);
         } else {
             selectedCourse.setTitle(title);
@@ -146,6 +141,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             selectedCourse.setInstructor(instructor);
             selectedCourse.setStatus(status);
             selectedCourse.setNote(noteContent);
+            selectedCourse.setTermId(termId);
 
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }
@@ -179,9 +175,9 @@ public class CourseDetailActivity extends AppCompatActivity {
 
 
     public void deleteCourse(View view) {
-        selectedCourse.setDeleted(new Date());
-        SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
-        sqLiteManager.updateCourseInDatabase(selectedCourse);
+       if (selectedCourse != null) {
+           sqLiteManager.deleteCourseInDatabase(selectedCourse.getId());
+       }
         finish();
     }
 

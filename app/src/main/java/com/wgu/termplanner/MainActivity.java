@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         initWidgets();
         loadFromDBToMemory();
         setTermAdapter();
-        setOnClickListener();
+
     }
 
     private void loadFromDBToMemory() {

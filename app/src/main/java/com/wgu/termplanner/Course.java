@@ -101,6 +101,7 @@ public class Course {
 
 
 
+
     public int getId() {
         return id;
     }
@@ -160,7 +161,7 @@ public class Course {
 
     public int getTermId() { return termId; }
 
-    public void setTermId(int anInt) { this.termId = termId;}
+    public void setTermId(int termId) { this.termId = termId;}
 
     // Methods for assessments
     public void addAssessment(Assessment assessment) {
