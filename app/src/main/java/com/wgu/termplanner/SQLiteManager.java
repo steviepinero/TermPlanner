@@ -19,7 +19,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
     private static SQLiteManager sqLiteManager;
     private static final String DATABASE_NAME = "Database";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
 
     private static final String TABLE_NAME = "Term";
     //Term table columns
@@ -55,7 +55,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
 
     //formatting the date with timestamp
-    private static final DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+    private static final DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
     private int deleted;
 
 

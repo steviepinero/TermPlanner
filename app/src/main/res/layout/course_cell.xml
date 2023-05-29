@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="15dp">
 
     <TableLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/cellTable"
+        android:layout_width="345dp"
         android:layout_height="wrap_content">
 
         <TableRow
@@ -73,9 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
                 android:maxLines="1"
                 android:text="Instructor"
-                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </TableRow>
@@ -106,10 +108,39 @@
 
         <TableRow
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/cellNote"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Note..."
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="italic" />
+
+            <Button
+                android:id="@+id/shareNoteButton"
+                style="@android:style/Widget.DeviceDefault.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="shareNoteButtonClicked"
+                android:text="Share"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:icon="?attr/actionModeShareDrawable"
+                app:iconPadding="2dp"
+                app:iconTint="#4CAF50" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/viewAssessmentsButton"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:onClick="onAssessmentDetailButtonClick"
@@ -117,6 +148,7 @@
 
             <Button
                 android:id="@+id/editCourseButton"
+                style="@style/Widget.AppCompat.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

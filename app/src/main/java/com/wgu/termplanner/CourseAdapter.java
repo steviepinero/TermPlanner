@@ -2,18 +2,18 @@ package com.wgu.termplanner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -48,6 +48,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.phone.setText(course.getInstructorPhone());
         holder.email.setText((course.getInstructorEmail()));
         holder.status.setText(course.getStatus());
+        holder.note.setText(course.getNote());
 
 
         holder.viewAssessmentsButton.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +62,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.editCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("editCourseButton in CourseAdapter holder.onClick");
                 Intent intent = new Intent(context, CourseDetailActivity.class);
                 intent.putExtra(Course.COURSE_EDIT_EXTRA, course.getId());  // Pass the course ID to the Activity
                 context.startActivity(intent);
@@ -77,8 +79,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     public class CourseViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, startDate, endDate, instructor, phone, email, status;
-        Button viewAssessmentsButton, editCourseButton;
+        TextView title, startDate, endDate, instructor, phone, email, status, note;
+        Button viewAssessmentsButton, editCourseButton, shareNoteButton;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,12 +92,57 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             phone = itemView.findViewById(R.id.cellInstructorPhone);
             email = itemView.findViewById(R.id.cellInstructorEmail);
             status = itemView.findViewById(R.id.cellStatus);
+            note = itemView.findViewById(R.id.cellNote);
             viewAssessmentsButton = itemView.findViewById(R.id.viewAssessmentsButton);
+
             editCourseButton = itemView.findViewById(R.id.editCourseButton);
+            /*editCourseButton.setOnClickListener(v -> {
+                System.out.println("editCourseButton in CourseAdapter");
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    // Get the course at this position
+                    Course selectedCourse = courses.get(position);
+
+                    // Create an intent for CourseDetailActivity
+                    Intent intent = new Intent(context, CourseDetailActivity.class);
+                    intent.putExtra(Course.COURSE_EDIT_EXTRA, selectedCourse.getId());
+
+                    // Start CourseDetailActivity
+                    context.startActivity(intent);
+                }
+            });*/
+
+            shareNoteButton = itemView.findViewById(R.id.shareNoteButton);
+            shareNoteButton.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    String note = courses.get(position).getNote();
+                    shareViaSMS(note);
+                }
+            });
         }
 
-        public void onCourseDetailButtonClick(View view) {
-            // Perform action on click here
+        private void shareViaSMS(String note) {
+            System.out.println("shareViaSMS in CourseAdapter ViewHolder");
+
+            Uri sendSMS = Uri.parse("smsto:");
+            Intent smsIntent = new Intent(Intent.ACTION_VIEW, sendSMS);
+
+            smsIntent.putExtra("sms_body", note);
+            System.out.println("Sharing note - " + note);
+
+            // Verify it resolves
+            PackageManager packageManager = context.getPackageManager();
+            List<ResolveInfo> activities = packageManager.queryIntentActivities(smsIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            boolean isIntentSafe = activities.size() > 0;
+
+            // Start an activity if it's safe
+            if (isIntentSafe) {
+                context.startActivity(smsIntent);
+                Toast.makeText(context, "Sharing note - " + note, Toast.LENGTH_SHORT);
+            } else {
+                Toast.makeText(context, "No SMS app found", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }

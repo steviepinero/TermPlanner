@@ -121,6 +121,15 @@ public class Course {
         return coursesForTerm;
     }
 
+    public static Course getCourseForId(int passedCourseID) {
+        for (Course course : courseArrayList)
+        {
+            if(course.getId() == passedCourseID)
+                return course;
+        }
+        return null;
+    }
+
 
 
 

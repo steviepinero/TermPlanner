@@ -194,19 +194,6 @@
             android:inputType="textMultiLine" />
 
         <Button
-            android:id="@+id/shareNoteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/purple_500"
-            android:text="Share Note"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:icon="@android:drawable/ic_menu_share" />
-
-        <Button
             android:id="@+id/deleteCourseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

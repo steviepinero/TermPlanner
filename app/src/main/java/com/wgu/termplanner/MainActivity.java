@@ -25,18 +25,16 @@ public class MainActivity extends AppCompatActivity {
     private void loadFromDBToMemory() {
         SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         Term.termArrayList.clear(); // Clear the list before populating
-        //TODO REMOVE TEST DATA INIT BEFORE SUBMISSION
-        sqLiteManager.populateWithTestData();
+
+        //this was for quick testing
+       /* sqLiteManager.populateWithTestData();*/
+
         sqLiteManager.populateTermListArray();
 
     }
 
     private void initWidgets() {
         loadFromDBToMemory();
-
-
-
-
         termListView = findViewById(R.id.termListView);
     }
 
@@ -48,14 +46,8 @@ public class MainActivity extends AppCompatActivity {
         termListView.setAdapter(termAdapter);
     }
 
-    private void setOnClickListener() {
-        termListView.setOnItemClickListener((adapterView, view, position, l) -> {
-            Term selectedTerm = (Term) termListView.getItemAtPosition(position);
-            Intent termDetailIntent = new Intent(getApplicationContext(), TermDetailActivity.class);
-            termDetailIntent.putExtra(Term.TERM_EDIT_EXTRA, selectedTerm.getId());
-            startActivity(termDetailIntent);
-        });
-    }
+
+
 
     public void newTerm(View view) {
         Intent newTermIntent = new Intent(this, TermDetailActivity.class);
@@ -68,16 +60,5 @@ public class MainActivity extends AppCompatActivity {
         setTermAdapter();
     }
 
-    /*public void onTermDetailButtonClick(View view) {
-        String debug = "OnTermDetailButtonClick in MainActivity";
-        System.out.println(debug);
 
-        // Get the Term object associated with the button's parent view
-        Term term = (Term) view.getTag();
-
-        // Launch the Course List activity, passing in the termId as an extra
-        Intent intent = new Intent(getApplicationContext(), TermDetailActivity.class);
-        intent.putExtra(Term.TERM_EDIT_EXTRA, term.getId());
-        startActivity(intent);
-    }*/
 }

@@ -39,6 +39,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         dueDateEditText = findViewById(R.id.dueDateEditText);
         assessmentRadioGroup = findViewById(R.id.assessmentRadioGroup);
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        deleteButton = findViewById(R.id.deleteAssessmentButton);
 
         // Initialize the SQLiteManager
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);

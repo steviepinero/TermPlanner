@@ -1,6 +1,9 @@
 package com.wgu.termplanner;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -66,19 +69,25 @@ public class CourseListActivity extends AppCompatActivity {
 
 
     public void onCourseDetailButtonClick(View view) {
+        // Get the course object associated with the button's parent view
+        Course selectedCourse = (Course) view.getTag();
+        if (selectedCourse == null) {
+            Toast.makeText(this, "Course is null or empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-    if (courseId == -1) {
-        Toast.makeText(this, "Course is null or empty", Toast.LENGTH_SHORT).show();
+        // Get the course ID and the note from the selected course
+        courseId = selectedCourse.getId();
+        String note = selectedCourse.getNote();
+
+        // Create an intent for CourseDetailActivity
+        Intent intent = new Intent(CourseListActivity.this, CourseDetailActivity.class);
+        intent.putExtra(Term.TERM_EDIT_EXTRA, termId);
+        intent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
+
+        // Start CourseDetailActivity
+        startActivity(intent);
     }
-
-    // Create an intent for CourseDetailActivity
-    Intent intent = new Intent(CourseListActivity.this, CourseDetailActivity.class);
-    intent.putExtra(Term.TERM_EDIT_EXTRA, termId);
-    intent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
-
-    // Start CourseDetailActivity
-    startActivity(intent);
-}
 
 
     public void addCourse(View view) {
@@ -89,7 +98,9 @@ public class CourseListActivity extends AppCompatActivity {
     }
 
 
-
-
 }
+
+
+
+
 

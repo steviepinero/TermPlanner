@@ -6,7 +6,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class CourseDetailActivity extends AppCompatActivity {
 
@@ -68,12 +72,6 @@ public class CourseDetailActivity extends AppCompatActivity {
         noteEditText = findViewById(R.id.noteEditText);
         shareNoteButton = findViewById(R.id.shareNoteButton);
         deleteButton = findViewById(R.id.deleteCourseButton);
-        shareNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareNote();
-            }
-        });
 
 
         // Initialize the SQLiteManager
@@ -86,7 +84,8 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         Log.d("CourseDetailActivity", "Passed course ID: " + passedCourseID);
 
-        selectedCourse = sqLiteManager.getCourseById(passedCourseID);
+
+        selectedCourse = Course.getCourseForId(passedCourseID);
 
         if (selectedCourse != null) {
             Log.d("CourseDetailActivity", "Course found in database: " + selectedCourse.getTitle());
@@ -109,9 +108,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         } else {
             Log.d("CourseDetailActivity", "Course not found in database");
             // Handle the situation when course is not found.
-            Toast.makeText(this,"Course not found in database", Toast.LENGTH_SHORT);
+            Toast.makeText(this,"Course not found in database", Toast.LENGTH_SHORT).show();
             deleteButton.setVisibility(View.INVISIBLE);
-            shareNoteButton.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -190,6 +188,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         scheduleAlarm(lastTimeInMillis, selectedCourse.getTitle() + " is ending today!");
 
 
+
+
         finish();
     }
 
@@ -203,26 +203,9 @@ public class CourseDetailActivity extends AppCompatActivity {
 
 
 
-    public void shareNote() {
-       /* if (selectedCourse != null) {
-            ArrayList<Note> courseNotes = sqLiteManager.getNotesForCourseId(selectedCourse.getId());
-            if (!courseNotes.isEmpty()) {
-                Note note = courseNotes.get(0);
-                String noteContent = note.getContent();
-
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, noteContent);
-                shareIntent.setType("text/plain");
-
-                startActivity(Intent.createChooser(shareIntent, "Share via"));
-            }
-        } else {
-            Toast.makeText(this, "No course selected", Toast.LENGTH_SHORT).show();
-        }*/
-    }
 
     public void scheduleAlarm(long time, String courseName) {
+
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         intent.setAction(MyAlarmReceiver.ACTION);
         intent.putExtra("courseName", courseName);
@@ -233,6 +216,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         // Setting the alarm. This will be triggered once at the specified date and time
         am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        System.out.println("ScheduleAlarm: CourseDetailActivity -  " + courseName + "\n Alarm details: " + am);
     }
 
 
