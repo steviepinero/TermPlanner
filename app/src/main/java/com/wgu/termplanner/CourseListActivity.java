@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CourseListActivity extends AppCompatActivity {
 
     private RecyclerView courseRecyclerView;
-    private int termId;
+    private int termId, courseId;
     private CourseAdapter courseAdapter;
 
     @Override
@@ -25,6 +25,8 @@ public class CourseListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_list);
 
         termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
+        // Get the course ID
+        int courseId = getIntent().getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
 
         initWidgets();
         setCourseAdapter();
@@ -58,14 +60,13 @@ public class CourseListActivity extends AppCompatActivity {
             courseAdapter = new CourseAdapter(getApplicationContext(), courses);
             courseRecyclerView.setAdapter(courseAdapter);
         } else {
-            Toast.makeText(this, "Course is null or empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please create a new course for this term", Toast.LENGTH_LONG).show();
         }
     }
 
 
     public void onCourseDetailButtonClick(View view) {
-    // Get the course ID
-    int courseId = getIntent().getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
+
     if (courseId == -1) {
         Toast.makeText(this, "Course is null or empty", Toast.LENGTH_SHORT).show();
     }
@@ -81,8 +82,9 @@ public class CourseListActivity extends AppCompatActivity {
 
 
     public void addCourse(View view) {
-        Intent addCourseIntent = new Intent(this, AddCourseActivity.class);
+        Intent addCourseIntent = new Intent(this, CourseDetailActivity.class);
         addCourseIntent.putExtra(Term.TERM_EDIT_EXTRA, termId);
+
         startActivity(addCourseIntent);
     }
 

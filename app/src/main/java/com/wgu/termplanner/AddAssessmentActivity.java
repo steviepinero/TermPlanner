@@ -68,9 +68,10 @@ public class AddAssessmentActivity extends AppCompatActivity {
         RadioButton selectedRadioButton = findViewById(selectedTypeId);
         String type = selectedRadioButton.getText().toString();
 
+
         if (assessment == null) { // if we're creating a new assessment
             int id = Assessment.assessmentArrayList.size();
-            int courseId = getIntent().getIntExtra(Assessment.ASSESSMENT_EDIT_EXTRA, -1);
+            courseId = getIntent().getIntExtra(Course.COURSE_EDIT_EXTRA, assessment.getCourseId());
             assessment = new Assessment(id, title, endDate, type, courseId);
 
 

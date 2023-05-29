@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SQLiteManager extends SQLiteOpenHelper {
 
@@ -411,7 +412,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(
                 "courses", // table to query
-                new String[] {"id", "title", "startDate", "endDate", "instructor", "phone", "email", "status","termId"}, // columns to return
+                new String[] {"id", "title", "startDate", "endDate", "instructor", "phone", "email", "status", "note","termId"}, // columns to return
                 "termId = ?", // columns for the WHERE clause
                 new String[] {String.valueOf(termId)}, // values for the WHERE clause
                 null, // group rows
@@ -551,5 +552,35 @@ public class SQLiteManager extends SQLiteOpenHelper {
         createAssessment("Test Assessment 1", "03/15/2023", "Objective Assessment", 1);
     }
 
+
+    public ArrayList<Term> getAllTerms() {
+        ArrayList<Term> termList = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Term term = new Term();
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String startDate = cursor.getString(2);
+                String endDate = cursor.getString(3);
+                // Adding term to list
+                termList.add(new Term(id, title, startDate, endDate));
+            } while (cursor.moveToNext());
+        }
+
+        // Close the cursor and database connection.
+        cursor.close();
+        db.close();
+
+        // return term list
+        return termList;
+    }
 
 }

@@ -32,6 +32,8 @@ public class TermDetailActivity extends AppCompatActivity {
         startDateEditText = findViewById(R.id.startDateEditText);
         endDateEditText = findViewById(R.id.endDateEditText);
         deleteButton = findViewById(R.id.deleteTermButton);
+
+        sqLiteManager = SQLiteManager.instanceOfDatabase(this);
     }
 
     private void checkForEditTerm() {
@@ -70,7 +72,7 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     public void deleteTerm(View view) {
-        SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);
+        /*SQLiteManager sqLiteManager = SQLiteManager.instanceOfDatabase(this);*/
 
         if (selectedTerm != null) {
             int courseCount = sqLiteManager.getCourseCountForTerm(selectedTerm.getId());
@@ -78,6 +80,7 @@ public class TermDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cannot delete term. There are courses associated with this term.", Toast.LENGTH_SHORT).show();
             } else {
                 sqLiteManager.deleteTermInDatabase(selectedTerm.getId());
+
             }
             finish();
         }

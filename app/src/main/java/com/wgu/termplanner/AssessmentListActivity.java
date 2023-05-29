@@ -91,7 +91,7 @@ public class AssessmentListActivity extends AppCompatActivity {
     }
 
     public void addAssessment(View view) {
-        Intent addAssessmentIntent = new Intent(this, AddAssessmentActivity.class);
+        Intent addAssessmentIntent = new Intent(this, AssessmentDetailActivity.class);
         addAssessmentIntent.putExtra(Course.COURSE_EDIT_EXTRA, courseId);
         startActivity(addAssessmentIntent);
     }

@@ -71,6 +71,17 @@ public class Assessment {
 
     }
 
+    public static Assessment getAssessmentById(int passedAssessmentId) {
+
+            for (Assessment assessment : assessmentArrayList)
+            {
+                if(assessment.getId() == passedAssessmentId)
+                    return assessment;
+            }
+            return null;
+
+    }
+
 
     public int getCourseId() {
         return courseId;

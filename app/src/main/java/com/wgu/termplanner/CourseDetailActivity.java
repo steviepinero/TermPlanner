@@ -33,7 +33,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private AssessmentAdapter assessmentAdapter;
     private SQLiteManager sqLiteManager;
     private EditText noteEditText;
-    private Button shareNoteButton;
+    private Button shareNoteButton, deleteButton;
 
 
 
@@ -67,6 +67,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         statusRadioGroup = findViewById(R.id.statusRadioGroup);
         noteEditText = findViewById(R.id.noteEditText);
         shareNoteButton = findViewById(R.id.shareNoteButton);
+        deleteButton = findViewById(R.id.deleteCourseButton);
         shareNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +110,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             Log.d("CourseDetailActivity", "Course not found in database");
             // Handle the situation when course is not found.
             Toast.makeText(this,"Course not found in database", Toast.LENGTH_SHORT);
+            deleteButton.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -132,14 +134,23 @@ public class CourseDetailActivity extends AppCompatActivity {
         String status = selectedRadioButton.getText().toString();
 
 
-        int termId = 0;
+
         if (selectedCourse == null) {
             int id = Course.courseArrayList.size();
-            termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1);
-            selectedCourse = new Course(id, title, startDate, endDate, status, instructor, instructorPhone, instructorEmail, noteContent, termId); // Pass termId when creating new course
-
-            sqLiteManager.addCourseToDatabase(selectedCourse);
+            int termId = getIntent().getIntExtra(Term.TERM_EDIT_EXTRA, -1); // -1 is default value if there is no extra with Term.TERM_EDIT_EXTRA
+            if (termId != -1) {
+                selectedCourse = new Course(id, title, startDate, endDate, instructor, instructorPhone, instructorEmail, status, noteContent, termId); // Pass termId when creating new course
+                sqLiteManager.addCourseToDatabase(selectedCourse);
+            } else {
+                Toast.makeText(this, "termId not found, setting termId to 1", Toast.LENGTH_SHORT);
+                termId = 1;
+                selectedCourse = new Course(id, title, startDate, endDate,  instructor, instructorPhone, instructorEmail, status, noteContent, termId); // Pass termId when creating new course
+                sqLiteManager.addCourseToDatabase(selectedCourse);
+            }
         } else {
+
+            int termId = selectedCourse.getTermId();
+
             selectedCourse.setTitle(title);
             selectedCourse.setStartDate(startDate);
             selectedCourse.setEndDate(endDate);
@@ -152,6 +163,7 @@ public class CourseDetailActivity extends AppCompatActivity {
 
             sqLiteManager.updateCourseInDatabase(selectedCourse);
         }
+
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyy");
 
         Date firstDate = null;

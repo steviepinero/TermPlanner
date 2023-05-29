@@ -3,9 +3,11 @@ package com.wgu.termplanner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +18,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     private SQLiteManager sqLiteManager;
     private Assessment selectedAssessment;
     private RadioGroup assessmentRadioGroup;
+    private Button deleteButton;
 
 
     @Override
@@ -56,13 +59,19 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             type = "Objective Assessment";
         }
 
+
         if (selectedAssessment == null) { // if we're creating a new selectedAssessment
             int id = Assessment.assessmentArrayList.size();
-            int courseId = getIntent().getIntExtra(Course.COURSE_EDIT_EXTRA, -1);
-            selectedAssessment = new Assessment(id, title, dueDate, type, courseId);
-
-
-            sqLiteManager.addAssessmentToDatabase(selectedAssessment);
+            int courseId = getIntent().getIntExtra(Course.COURSE_EDIT_EXTRA, -1); // default value set to -1
+            if(courseId != -1) {
+                selectedAssessment = new Assessment(id, title, dueDate, type, courseId);
+                sqLiteManager.addAssessmentToDatabase(selectedAssessment);
+            } else {
+                Toast.makeText(this, "courseId not found, setting courseId to 1", Toast.LENGTH_SHORT);
+                courseId = 1;
+                selectedAssessment = new Assessment(id, title, dueDate, type, courseId);
+                sqLiteManager.addAssessmentToDatabase(selectedAssessment);
+            }
         } else { // if we're editing an existing selectedAssessment
             selectedAssessment.setTitle(title);
             selectedAssessment.setDueDate(dueDate);
@@ -75,6 +84,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         finish();
     }
 
+
     public void deleteAssessment(View view) {
         if (selectedAssessment != null) {
             sqLiteManager.deleteAssessmentInDatabase(selectedAssessment.getId());
@@ -85,28 +95,28 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     }
 
     public void checkForEditAssessment() {
-        // Get selectedAssessment from intent
+        // Get assessment from intent
         Intent intent = getIntent();
         int passedAssessmentId = intent.getIntExtra(Assessment.ASSESSMENT_EDIT_EXTRA, -1);
-        selectedAssessment = sqLiteManager.getAssessmentById(passedAssessmentId);
+        selectedAssessment = Assessment.getAssessmentById(passedAssessmentId);
 
         if (selectedAssessment != null) {
             titleEditText.setText(selectedAssessment.getTitle());
             dueDateEditText.setText(selectedAssessment.getDueDate());
 
-        }
-        String assessmentType = selectedAssessment.getAssessmentType();
-        for (int i = 0; i < assessmentRadioGroup.getChildCount(); i++){
-
-            RadioButton radioButton = (RadioButton) assessmentRadioGroup.getChildAt(i);
-            if (radioButton.getText().toString().equals(assessmentType)) {
-                radioButton.setChecked(true);
-                break;
-        }
-
-
+            String assessmentType = selectedAssessment.getAssessmentType();
+            for (int i = 0; i < assessmentRadioGroup.getChildCount(); i++){
+                RadioButton radioButton = (RadioButton) assessmentRadioGroup.getChildAt(i);
+                if (radioButton.getText().toString().equals(assessmentType)) {
+                    radioButton.setChecked(true);
+                    break;
+                }
+            }
+        } else {
+            deleteButton.setVisibility(View.INVISIBLE);
         }
     }
+
 
 
     public void showDatePickerDialog(View view) {

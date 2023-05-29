@@ -39,6 +39,13 @@ public class Term {
         this.endDate = endDate;
     }
 
+    public Term() {
+        this.id = id;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public static Term getTermForID(int passedTermID) {
         for (Term term : termArrayList)
         {

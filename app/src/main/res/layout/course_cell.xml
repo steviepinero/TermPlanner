@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="15dp">
 
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/cellTitle"
@@ -22,21 +22,21 @@
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/cellStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:maxLines="1"
-                android:text="Status"
                 android:paddingLeft="25dp"
+                android:text="Status"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/cellStartDate"
@@ -46,26 +46,26 @@
                 android:maxLines="1"
                 android:text="Start Date"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/cellEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:paddingLeft="25dp"
+                android:layout_marginTop="8dp"
                 android:maxLines="1"
+                android:paddingLeft="25dp"
                 android:text="End Date"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
+            android:layout_height="match_parent"
+            android:gravity="center">
 
 
             <TextView
@@ -75,11 +75,13 @@
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
                 android:text="Instructor"
+                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/cellInstructorPhone"
                 android:layout_width="wrap_content"
@@ -88,35 +90,36 @@
                 android:maxLines="1"
                 android:text="Instructor Phone"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
+
             <TextView
                 android:id="@+id/cellInstructorEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:maxLines="1"
-                android:paddingLeft="25dp"
+                android:paddingLeft="5dp"
                 android:text="Instructor Email"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
             <Button
                 android:id="@+id/viewAssessmentsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:onClick="onAssessmentDetailButtonClick"
-                android:text="Assessments"
-                />
+                android:text="Assessments" />
 
             <Button
                 android:id="@+id/editCourseButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="right"
+                android:layout_gravity="center"
                 android:onClick="onCourseDetailButtonClick"
                 android:text="Edit" />
 
