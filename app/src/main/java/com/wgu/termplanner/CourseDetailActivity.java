@@ -111,6 +111,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             // Handle the situation when course is not found.
             Toast.makeText(this,"Course not found in database", Toast.LENGTH_SHORT);
             deleteButton.setVisibility(View.INVISIBLE);
+            shareNoteButton.setVisibility(View.INVISIBLE);
         }
     }
 
