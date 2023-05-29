@@ -1,6 +1,12 @@
 package com.wgu.termplanner;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.security.cert.CertPathChecker;
+import java.text.ParseException;
+import java.util.Date;
 
 public class AssessmentDetailActivity extends AppCompatActivity {
     private EditText dueDateEditText, titleEditText;
@@ -31,6 +38,13 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         initWidgets();
 
         checkForEditAssessment();
+        //notification channel required
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("ASSESSMENT_CHANNEL_ID", "Assessment Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Channel for Assessment Notifications");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
 
     }
 
@@ -81,8 +95,43 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             sqLiteManager.updateAssessmentInDatabase(selectedAssessment);
         }
 
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyy");
+
+        Date date = null;
+
+
+        try {
+            // Parse the string dates into Date objects
+            date = sdf.parse(dueDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // Convert the Date objects to milliseconds
+        long timeInMillis = date.getTime();
+
+
+        System.out.println("End date in milliseconds: " + timeInMillis);
+
+        // Schedule alarms for the start and end dates of the course
+        scheduleAlarm(timeInMillis, selectedAssessment.getTitle());
+
         // Go back to the previous activity
         finish();
+    }
+
+    private void scheduleAlarm(long time, String assessmentName) {
+        Intent intent = new Intent(this, MyAlarmReceiver.class);
+        intent.setAction(MyAlarmReceiver.ACTION);
+        intent.putExtra("assessmentName", assessmentName);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Getting the alarm manager service
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // Setting the alarm. This will be triggered once at the specified date and time
+        am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        System.out.println("ScheduleAlarm: AssessmentDetailActivity -  " + assessmentName + "\n Alarm details: " + am);
     }
 
 
