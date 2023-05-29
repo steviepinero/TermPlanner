@@ -41,6 +41,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
         holder.editAssessmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("editAssessmentButton in AssessmentAdapter");
                 // Start the AssessmentDetailActivity
                 Intent intent = new Intent(context, AssessmentDetailActivity.class);
                 // pass extra data if needed

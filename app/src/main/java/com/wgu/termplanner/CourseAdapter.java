@@ -59,15 +59,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 context.startActivity(intent);
             }
         });
-        holder.editCourseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("editCourseButton in CourseAdapter holder.onClick");
-                Intent intent = new Intent(context, CourseDetailActivity.class);
-                intent.putExtra(Course.COURSE_EDIT_EXTRA, course.getId());  // Pass the course ID to the Activity
-                context.startActivity(intent);
-            }
-        });
+
     }
 
     @Override
@@ -96,7 +88,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             viewAssessmentsButton = itemView.findViewById(R.id.viewAssessmentsButton);
 
             editCourseButton = itemView.findViewById(R.id.editCourseButton);
-            /*editCourseButton.setOnClickListener(v -> {
+            editCourseButton.setOnClickListener(v -> {
                 System.out.println("editCourseButton in CourseAdapter");
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
@@ -110,7 +102,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                     // Start CourseDetailActivity
                     context.startActivity(intent);
                 }
-            });*/
+            });
 
             shareNoteButton = itemView.findViewById(R.id.shareNoteButton);
             shareNoteButton.setOnClickListener(v -> {
