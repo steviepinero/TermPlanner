@@ -27,6 +27,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         this.courses = courses;
     }
 
+    //TODO FIX BUG WHERE EDIT COURSE VIEW FAILS UNTIL YOU NAVIGATE AWAY FROM COURSES, ie Edit term > back button > view courses > edit course
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+        notifyDataSetChanged();
+    }
 
 
 
