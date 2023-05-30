@@ -56,7 +56,7 @@
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:hint="My course" />
+        android:hint="My assessment" />
 
     <TextView
         android:layout_width="wrap_content"
