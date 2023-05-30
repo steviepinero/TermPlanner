@@ -9,19 +9,25 @@ import androidx.core.app.NotificationManagerCompat;
 public class MyAlarmReceiver extends BroadcastReceiver {
     public static final int REQUEST_CODE = 12345;
     public static final String ACTION = "com.wgu.termplanner.alarm.ACTION";
+    public static final String TYPE_EXTRA = "notificationType";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        createNotification(context, intent.getStringExtra("courseName"));
-        createAssNotification(context, intent.getStringExtra("assessmentName"));
+        String type = intent.getStringExtra(TYPE_EXTRA);
+        if ("course".equals(type)) {
+            createNotification(context, intent.getStringExtra("courseName"));
+        } else if ("assessment".equals(type)) {
+            createAssNotification(context, intent.getStringExtra("assessmentName"));
+        }
     }
+
 
     private void createNotification(Context context, String courseName) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "COURSE_CHANNEL_ID")
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("Course Alert")
 
-                .setContentText("The course " + courseName + " is starting or ending today!")
+                .setContentText("The course " + courseName + " !")
 
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 

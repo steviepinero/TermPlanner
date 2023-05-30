@@ -184,8 +184,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         System.out.println("End date in milliseconds: " + lastTimeInMillis);
 
         // Schedule alarms for the start and end dates of the course
-        scheduleAlarm(firstTimeInMillis, selectedCourse.getTitle() + " is starting today!");
-        scheduleAlarm(lastTimeInMillis, selectedCourse.getTitle() + " is ending today!");
+        scheduleAlarm(firstTimeInMillis, selectedCourse.getTitle() + " is starting today!", "course");
+        scheduleAlarm(lastTimeInMillis, selectedCourse.getTitle() + " is ending today!", "course");
 
 
 
@@ -204,11 +204,12 @@ public class CourseDetailActivity extends AppCompatActivity {
 
 
 
-    public void scheduleAlarm(long time, String courseName) {
+    public void scheduleAlarm(long time, String courseName, String type) {
 
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         intent.setAction(MyAlarmReceiver.ACTION);
         intent.putExtra("courseName", courseName);
+        intent.putExtra(MyAlarmReceiver.TYPE_EXTRA, type);  // notification type parameter
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Getting the alarm manager service

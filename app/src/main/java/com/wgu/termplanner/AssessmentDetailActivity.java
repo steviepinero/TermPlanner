@@ -114,16 +114,17 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         System.out.println("End date in milliseconds: " + timeInMillis);
 
         // Schedule alarms for the start and end dates of the course
-        scheduleAlarm(timeInMillis, selectedAssessment.getTitle());
+        scheduleAlarm(timeInMillis, selectedAssessment.getTitle(), "assessment");
 
         // Go back to the previous activity
         finish();
     }
 
-    private void scheduleAlarm(long time, String assessmentName) {
+    private void scheduleAlarm(long time, String assessmentName, String type) {
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         intent.setAction(MyAlarmReceiver.ACTION);
         intent.putExtra("assessmentName", assessmentName);
+        intent.putExtra(MyAlarmReceiver.TYPE_EXTRA, type);  // notification type parameter
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Getting the alarm manager service
