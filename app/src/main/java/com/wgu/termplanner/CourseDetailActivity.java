@@ -210,7 +210,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         intent.setAction(MyAlarmReceiver.ACTION);
         intent.putExtra("courseName", courseName);
         intent.putExtra(MyAlarmReceiver.TYPE_EXTRA, type);  // notification type parameter
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // Getting the alarm manager service
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

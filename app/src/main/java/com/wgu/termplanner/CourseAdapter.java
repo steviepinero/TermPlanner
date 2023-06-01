@@ -61,6 +61,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             public void onClick(View v) {
                 Intent intent = new Intent(context, AssessmentListActivity.class);
                 intent.putExtra(Course.COURSE_EDIT_EXTRA, course.getId());  // Pass the course ID to the AssessmentListActivity
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 context.startActivity(intent);
             }
         });
@@ -103,6 +105,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                     // Create an intent for CourseDetailActivity
                     Intent intent = new Intent(context, CourseDetailActivity.class);
                     intent.putExtra(Course.COURSE_EDIT_EXTRA, selectedCourse.getId());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
 
                     // Start CourseDetailActivity
                     context.startActivity(intent);
@@ -124,6 +128,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
             Uri sendSMS = Uri.parse("smsto:");
             Intent smsIntent = new Intent(Intent.ACTION_VIEW, sendSMS);
+            smsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+
 
             smsIntent.putExtra("sms_body", note);
             System.out.println("Sharing note - " + note);
@@ -136,6 +143,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             // Start an activity if it's safe
             if (isIntentSafe) {
                 context.startActivity(smsIntent);
+                smsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 Toast.makeText(context, "Sharing note - " + note, Toast.LENGTH_SHORT);
             } else {
                 Toast.makeText(context, "No SMS app found", Toast.LENGTH_SHORT).show();

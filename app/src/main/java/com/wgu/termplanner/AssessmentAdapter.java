@@ -46,6 +46,8 @@ public class AssessmentAdapter extends RecyclerView.Adapter<AssessmentAdapter.As
                 Intent intent = new Intent(context, AssessmentDetailActivity.class);
                 // pass extra data if needed
                  intent.putExtra(Assessment.ASSESSMENT_EDIT_EXTRA, assessment.getId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                 context.startActivity(intent);
             }
         });

@@ -75,6 +75,8 @@ public class TermAdapter extends ArrayAdapter<Term> {
         // Launch the Course List activity, passing in the termId as an extra
         Intent intent = new Intent(getContext(), CourseListActivity.class);
         intent.putExtra(Term.TERM_EDIT_EXTRA, term.getId());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         getContext().startActivity(intent);
     }
 
@@ -88,6 +90,8 @@ public class TermAdapter extends ArrayAdapter<Term> {
         // Launch the Course List activity, passing in the termId as an extra
         Intent intent = new Intent(getContext(), TermDetailActivity.class);
         intent.putExtra(Term.TERM_EDIT_EXTRA, term.getId());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         getContext().startActivity(intent);
     }
 
