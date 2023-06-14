@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 public class AssessmentDetailActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     private Assessment selectedAssessment;
     private RadioGroup assessmentRadioGroup;
     private Button deleteButton;
+    private Button alarmAssessmentButton;
 
 
     @Override
@@ -54,9 +56,14 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         assessmentRadioGroup = findViewById(R.id.assessmentRadioGroup);
         sqLiteManager = SQLiteManager.instanceOfDatabase(this);
         deleteButton = findViewById(R.id.deleteAssessmentButton);
+        alarmAssessmentButton = findViewById(R.id.alarmAssessmentButton);
+        alarmAssessmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scheduleAlarm(13, selectedAssessment.getTitle(), selectedAssessment.getAssessmentType());
+            }
+        });
 
-        // Initialize the SQLiteManager
-        sqLiteManager = SQLiteManager.instanceOfDatabase(this);
     }
 
     public void saveAssessment(View view) {
@@ -125,14 +132,21 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         intent.setAction(MyAlarmReceiver.ACTION);
         intent.putExtra("assessmentName", assessmentName);
         intent.putExtra(MyAlarmReceiver.TYPE_EXTRA, type);  // notification type parameter
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MyAlarmReceiver.REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // Getting the alarm manager service
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         // Setting the alarm. This will be triggered once at the specified date and time
-        am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
-        System.out.println("ScheduleAlarm: AssessmentDetailActivity -  " + assessmentName + "\n Alarm details: " + am);
+        //TODO let user set alarms, not automate alarms -- working on that now
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 13); // set alarm to 1pm
+        if (am != null) {
+            am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            System.out.println("ScheduleAlarm: AssessmentDetailActivity -  " + assessmentName + "\n Alarm details: " + am);
+        }
     }
 
 
@@ -165,12 +179,16 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             }
         } else {
             deleteButton.setVisibility(View.INVISIBLE);
+            alarmAssessmentButton.setVisibility(View.INVISIBLE);
         }
     }
 
 
 
     public void showDatePickerDialog(View view) {
+    }
+
+    public void alarmAssessment(View view) {
     }
 }
 
