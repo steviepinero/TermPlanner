@@ -73,6 +73,12 @@ public class CourseDetailActivity extends AppCompatActivity {
         shareNoteButton = findViewById(R.id.shareNoteButton);
         deleteButton = findViewById(R.id.deleteCourseButton);
         alarmCourseButton = findViewById(R.id.alarmCourseButton);
+        alarmCourseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scheduleAlarm(13, selectedCourse.getTitle(), selectedCourse.getStatus());
+            }
+        });
 
 
         // Initialize the SQLiteManager
