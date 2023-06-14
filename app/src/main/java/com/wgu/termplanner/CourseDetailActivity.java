@@ -37,7 +37,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private AssessmentAdapter assessmentAdapter;
     private SQLiteManager sqLiteManager;
     private EditText noteEditText;
-    private Button shareNoteButton, deleteButton;
+    private Button shareNoteButton, deleteButton, alarmCourseButton;
 
 
 
@@ -72,6 +72,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         noteEditText = findViewById(R.id.noteEditText);
         shareNoteButton = findViewById(R.id.shareNoteButton);
         deleteButton = findViewById(R.id.deleteCourseButton);
+        alarmCourseButton = findViewById(R.id.alarmCourseButton);
 
 
         // Initialize the SQLiteManager
@@ -110,6 +111,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             // Handle the situation when course is not found.
             Toast.makeText(this,"Course not found in database", Toast.LENGTH_SHORT).show();
             deleteButton.setVisibility(View.INVISIBLE);
+            alarmCourseButton.setVisibility(View.INVISIBLE);
         }
     }
 
