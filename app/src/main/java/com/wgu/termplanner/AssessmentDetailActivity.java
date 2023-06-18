@@ -112,6 +112,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             date = sdf.parse(dueDate);
         } catch (ParseException e) {
             e.printStackTrace();
+            Toast.makeText(this, "Date format is incorrect", Toast.LENGTH_SHORT);
         }
 
         // Convert the Date objects to milliseconds
@@ -120,8 +121,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
         System.out.println("End date in milliseconds: " + timeInMillis);
 
-        // Schedule alarms for the start and end dates of the course
-        scheduleAlarm(timeInMillis, selectedAssessment.getTitle(), "assessment");
+
 
         // Go back to the previous activity
         finish();
@@ -138,14 +138,13 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         // Setting the alarm. This will be triggered once at the specified date and time
-        //TODO let user set alarms, not automate alarms -- working on that now
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 13); // set alarm to 1pm
+        calendar.setTimeInMillis(time);
         if (am != null) {
-            am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             System.out.println("ScheduleAlarm: AssessmentDetailActivity -  " + assessmentName + "\n Alarm details: " + am);
+            Toast.makeText(this,"Scheduled Alarm", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -179,16 +178,13 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             }
         } else {
             deleteButton.setVisibility(View.INVISIBLE);
-            alarmAssessmentButton.setVisibility(View.INVISIBLE);
         }
     }
 
 
 
-    public void showDatePickerDialog(View view) {
-    }
-
     public void alarmAssessment(View view) {
+        System.out.print("alarmAssessment method");
     }
 }
 

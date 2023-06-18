@@ -145,7 +145,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 context.startActivity(smsIntent);
                 smsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                Toast.makeText(context, "Sharing note - " + note, Toast.LENGTH_SHORT);
+                Toast.makeText(context, "Sharing note - " + note, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(context, "No SMS app found", Toast.LENGTH_SHORT).show();
             }

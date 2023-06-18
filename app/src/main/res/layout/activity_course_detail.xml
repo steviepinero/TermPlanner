@@ -193,18 +193,30 @@
             android:inputType="textMultiLine" />
 
         <Button
-            android:id="@+id/alarmCourseButton"
+            android:id="@+id/alarmStartCourseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/purple_500"
-            android:onClick="deleteCourse"
-            android:text="Delete"
+            android:text="Set Start Date Alarm"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:icon="@android:drawable/ic_dialog_alert" />
+            app:icon="@android:drawable/ic_lock_idle_alarm" />
+
+        <Button
+            android:id="@+id/alarmEndCourseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/purple_500"
+            android:text="Set End Date Alarm"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:icon="@android:drawable/ic_lock_idle_alarm" />
 
         <Button
             android:id="@+id/deleteCourseButton"
@@ -212,9 +224,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/purple_500"
+            android:backgroundTint="#F44336"
             android:onClick="deleteCourse"
-            android:text="Delete"
+            android:text="Delete Course"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold"

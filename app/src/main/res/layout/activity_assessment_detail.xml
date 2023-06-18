@@ -125,10 +125,12 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/purple_500"
         android:onClick="alarmAssessment"
-        android:text="Set Alarm"
+        android:text="Set Due Date Alarm"
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
+
+
 
     <Button
         android:id="@+id/deleteAssessmentButton"

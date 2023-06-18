@@ -6,10 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.icu.text.SimpleDateFormat;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,13 +17,10 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class CourseDetailActivity extends AppCompatActivity {
 
@@ -37,7 +31,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private AssessmentAdapter assessmentAdapter;
     private SQLiteManager sqLiteManager;
     private EditText noteEditText;
-    private Button shareNoteButton, deleteButton, alarmCourseButton;
+    private Button shareNoteButton, deleteButton, alarmStartCourseButton, alarmEndCourseButton;
 
 
 
@@ -72,8 +66,16 @@ public class CourseDetailActivity extends AppCompatActivity {
         noteEditText = findViewById(R.id.noteEditText);
         shareNoteButton = findViewById(R.id.shareNoteButton);
         deleteButton = findViewById(R.id.deleteCourseButton);
-        alarmCourseButton = findViewById(R.id.alarmCourseButton);
-        alarmCourseButton.setOnClickListener(new View.OnClickListener() {
+        alarmStartCourseButton = findViewById(R.id.alarmStartCourseButton);
+        alarmStartCourseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scheduleAlarm(13, selectedCourse.getTitle(), selectedCourse.getStatus());
+
+            }
+        });
+        alarmEndCourseButton = findViewById(R.id.alarmEndCourseButton);
+        alarmEndCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scheduleAlarm(13, selectedCourse.getTitle(), selectedCourse.getStatus());
@@ -117,7 +119,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             // Handle the situation when course is not found.
             Toast.makeText(this,"Course not found in database", Toast.LENGTH_SHORT).show();
             deleteButton.setVisibility(View.INVISIBLE);
-            alarmCourseButton.setVisibility(View.INVISIBLE);
+            //todo update story board
+           /* alarmStartCourseButton.setVisibility(View.INVISIBLE);*/
         }
     }
 
@@ -192,8 +195,9 @@ public class CourseDetailActivity extends AppCompatActivity {
         System.out.println("End date in milliseconds: " + lastTimeInMillis);
 
         // Schedule alarms for the start and end dates of the course
-        scheduleAlarm(firstTimeInMillis, selectedCourse.getTitle() + " is starting today!", "course");
-        scheduleAlarm(lastTimeInMillis, selectedCourse.getTitle() + " is ending today!", "course");
+        //TODO CHANGE THIS
+      /*  scheduleAlarm(firstTimeInMillis, selectedCourse.getTitle() + " is starting today!", "course");
+        scheduleAlarm(lastTimeInMillis, selectedCourse.getTitle() + " is ending today!", "course");*/
 
 
 
@@ -226,6 +230,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         // Setting the alarm. This will be triggered once at the specified date and time
         am.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
         System.out.println("ScheduleAlarm: CourseDetailActivity -  " + courseName + "\n Alarm details: " + am);
+        Toast.makeText(this,"Scheduled Alarm", Toast.LENGTH_SHORT).show();
     }
 
 
