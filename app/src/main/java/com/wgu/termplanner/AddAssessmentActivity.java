@@ -104,7 +104,7 @@ public class AddAssessmentActivity extends AppCompatActivity {
         RadioGroup assessmentRadioGroup = findViewById(R.id.assessmentRadioGroup);
         String type = assessment.getAssessmentType();
 
-        if (type.equals("Performance Assessment")) {
+        if ("Performance Assessment".equals(type)) {
             assessmentRadioGroup.check(R.id.performanceAssessment);
         } else {
             assessmentRadioGroup.check(R.id.objectiveAssessment);
